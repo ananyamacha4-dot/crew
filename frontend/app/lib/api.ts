@@ -7,6 +7,8 @@ export type GeneratedFile = { path: string; content: string };
 
 export type AgentStep = { agent: string; summary: string };
 
+export type PaletteColor = { name: string; hex: string };
+
 export type GenerateResponse = {
   project_id: string;
   name: string;
@@ -15,6 +17,10 @@ export type GenerateResponse = {
   files: GeneratedFile[];
   trail: AgentStep[];
   message: string;
+  suggestions: string[];
+  intent: "math" | "research" | "chat" | "build" | "design" | "image";
+  palette: PaletteColor[];
+  sources: string[];
 };
 
 export async function generate(
@@ -44,4 +50,44 @@ export async function saveFile(
     body: JSON.stringify({ path, content }),
   });
   if (!res.ok) throw new Error(await res.text());
+}
+
+// --- Project history ---
+
+export type ProjectSummary = {
+  id: string;
+  name: string;
+  entry: string;
+  created_at: number;
+  updated_at: number;
+};
+
+export type ProjectDetail = ProjectSummary & {
+  files: { path: string; content: string }[];
+};
+
+export type ChatMessage = {
+  id: number;
+  role: string;
+  content: string;
+  agent: string | null;
+  created_at: number;
+};
+
+export async function listProjects(): Promise<ProjectSummary[]> {
+  const res = await fetch(`${BACKEND}/projects`);
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function getProject(projectId: string): Promise<ProjectDetail> {
+  const res = await fetch(`${BACKEND}/projects/${projectId}`);
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function getMessages(projectId: string): Promise<ChatMessage[]> {
+  const res = await fetch(`${BACKEND}/projects/${projectId}/messages`);
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
 }

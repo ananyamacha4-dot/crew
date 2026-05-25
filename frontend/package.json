@@ -10,9 +10,11 @@
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.20.0",
     "@monaco-editor/react": "4.6.0",
+    "framer-motion": "^12.40.0",
     "next": "14.2.5",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "react-loading-skeleton": "^3.5.0"
   },
   "devDependencies": {
     "@types/node": "20.14.10",
