@@ -117,8 +117,53 @@ def _strip_fences(text: str) -> str:
     return s.strip()
 
 
+def _extract_json(text: str) -> str:
+    """Pull the first top-level JSON object/array out of *text*,
+    ignoring any commentary the LLM may have added around it."""
+    # Replace backticks with double quotes (LLM uses JS template literals).
+    text = text.replace("`", '"')
+    # Find the first '{' or '[' and match to the last '}' or ']'.
+    start = None
+    opener = None
+    for i, ch in enumerate(text):
+        if ch in "{[":
+            start = i
+            opener = ch
+            break
+    if start is None:
+        return text
+    closer = "}" if opener == "{" else "]"
+    # Walk backwards from the end to find the matching close.
+    end = text.rfind(closer)
+    if end is not None and end > start:
+        return text[start : end + 1]
+    return text[start:]
+
+
+def _normalize_data(data: Any) -> Any:
+    """Unwrap list→dict and clean up arrays with stray non-dict items."""
+    # Unwrap single-element list.
+    if isinstance(data, list):
+        # Pick the first dict that looks like a model.
+        for item in data:
+            if isinstance(item, dict):
+                data = item
+                break
+        else:
+            return data
+    # Clean up list-valued fields that have stray strings mixed in.
+    if isinstance(data, dict):
+        for key, val in data.items():
+            if isinstance(val, list):
+                cleaned = [item for item in val if isinstance(item, dict)]
+                if cleaned and len(cleaned) != len(val):
+                    data[key] = cleaned
+    return data
+
+
 def _parse_into(text: str, model_cls: Type[M]) -> M:
     raw = _strip_fences(text)
+    raw = _extract_json(raw)
     data: Any
     try:
         data = json.loads(raw)
@@ -127,6 +172,7 @@ def _parse_into(text: str, model_cls: Type[M]) -> M:
         if isinstance(repaired, str):
             raise RuntimeError(f"unparseable LLM output: {raw[:300]!r}")
         data = repaired
+    data = _normalize_data(data)
     try:
         return model_cls.model_validate(data)
     except ValidationError as e:
@@ -571,29 +617,131 @@ def _run_engineer(
         "    Do NOT 'import from shadcn-ui' as if it were an npm package — it is not.\n"
         " 3. Every <Button>, <Link>, form, modal, tab, accordion, dropdown MUST have\n"
         "    a working handler. If you cannot make it work, do not render it.\n"
-        " 4. Every <Link to='/x'> MUST have a matching <Route path='/x'> in App.tsx.\n"
-        " 5. Use the ContentPack copy VERBATIM. Never invent your own marketing copy.\n"
-        "    Never use 'lorem ipsum'.\n"
-        " 6. Use the design palette via CSS variables / Tailwind tokens.\n"
+        "\n"
+        "NAVIGATION — CRITICAL (broken nav = broken app):\n"
+        " 4. The HEADER nav links are the SINGLE SOURCE OF TRUTH for routing.\n"
+        "    Step A: Read content.nav_items — each has {label, route}.\n"
+        "    Step B: In App.tsx, add a <Route path={route} element={<PageComponent />} />\n"
+        "            for EVERY nav_item route. Also add <Route path='/' ... /> for home.\n"
+        "    Step C: In Header.tsx, render <Link to={route}>{label}</Link> for each.\n"
+        "    Step D: Create a src/pages/*.tsx file for EVERY route.\n"
+        "    RESULT: Every nav link clicks → route matches → page renders. Zero dead links.\n"
+        " 5. NEVER use <a href='#section'>. Use <Link to='/route'> for page nav.\n"
+        "    For same-page scroll, use onClick={() => document.getElementById('id')?.scrollIntoView({behavior:'smooth'})}.\n"
+        " 6. If brief.pages is empty, create at LEAST: Home ('/'), About ('/about'),\n"
+        "    Contact ('/contact'). Each page MUST have real content — not just a heading.\n"
+        "\n"
+        "PAGE CONTENT — every page must feel complete:\n"
+        " 7. Every page MUST have at least 2 distinct content sections with real content.\n"
+        "    Example: a Features page needs a grid of feature cards (minimum 2 cards),\n"
+        "    PLUS a CTA or description section. NEVER render a page with just a title.\n"
+        " 8. Cards, grids, lists: always render at least 2 real items with real text.\n"
+        "    NEVER render empty arrays or single placeholder items.\n"
+        " 9. Use the ContentPack copy VERBATIM. Never invent your own marketing copy.\n"
+        "    Never use 'lorem ipsum'. If ContentPack is sparse, write realistic copy\n"
+        "    that fits the brand.\n"
+        "\n"
+        "STYLING & QUALITY:\n"
+        "10. Use the design palette via CSS variables / Tailwind tokens.\n"
         "    Do NOT hardcode hex colors in JSX.\n"
-        " 7. Mobile-first responsive: every section must work at 375px, 768px, 1280px.\n"
-        " 8. framer-motion only on purposeful motion (hero entry, modal, section\n"
+        "11. Mobile-first responsive: every section must work at 375px, 768px, 1280px.\n"
+        "12. framer-motion only on purposeful motion (hero entry, modal, section\n"
         "    reveal). Never animate every element.\n"
-        " 9. Forms: react-hook-form + zod. Inline error messages + sonner toast on submit.\n"
-        "10. Render sections in the order listed in brief.pages[].sections.\n"
-        "11. No '...' placeholders. No TODOs. No commented-out code. Complete content.\n"
-        "12. JSON output rules — STRICT:\n"
-        "    - Top-level keys: 'files' (list of {path, content}), 'entry', 'summary'.\n"
-        "    - Inside string values, escape special chars: \\n for newlines,\n"
-        "      \\\" for double-quotes, \\\\ for backslashes. NEVER use literal newlines\n"
-        "      inside JSON string values.\n"
-        "    - 'entry' must be 'index.html'.\n"
-        "    - No markdown fences. No commentary. Just the JSON object.\n"
+        "13. Forms: react-hook-form + zod. Inline error messages + sonner toast on submit.\n"
+        "14. Render sections in the order listed in brief.pages[].sections.\n"
+        "15. No '...' placeholders. No TODOs. No commented-out code. Complete content.\n"
+        "16. NEVER invent npm package names. Use ONLY the exact packages listed above.\n"
+        "    The package is 'class-variance-authority' — NOT '@class-variance-authority/*'.\n"
+        "\n"
+        "JSON OUTPUT — STRICT:\n"
+        "17. Top-level keys: 'files' (list of {path, content}), 'entry', 'summary'.\n"
+        "18. Inside string values, escape special chars: \\n for newlines,\n"
+        "    \\\" for double-quotes, \\\\ for backslashes. NEVER use literal newlines\n"
+        "    inside JSON string values.\n"
+        "19. 'entry' must be 'index.html'.\n"
+        "20. No markdown fences. No commentary. Just the JSON object.\n"
     )
 
     description = "\n\n".join(parts)
-    raw = _run_task(agent, description, "A JSON object matching FileSet.")
-    return _parse_into(raw, FileSet)
+
+    # Try primary model (Groq 70B), retry with backup key if it fails.
+    last_err: Exception | None = None
+    for attempt in range(2):
+        try:
+            raw = _run_task(agent, description, "A JSON object matching FileSet.")
+            print(f"[engineer:attempt-{attempt + 1}] raw output length: {len(raw)} chars", flush=True)
+            fs = _parse_into(raw, FileSet)
+            _validate_fileset(fs)
+            return _sanitize_fileset(fs)
+        except Exception as e:
+            last_err = e
+            print(f"[engineer:attempt-{attempt + 1}] failed: {e}", flush=True)
+            # Swap to backup Groq key for next attempt
+            backup_key = os.environ.get("GROQ_API_KEY_BACKUP")
+            if backup_key:
+                os.environ["GROQ_API_KEY"] = backup_key
+
+    raise RuntimeError(f"Engineer failed after retries: {last_err}")
+
+
+_REQUIRED_FILES = {"package.json", "index.html", "src/main.tsx", "src/App.tsx"}
+
+
+def _validate_fileset(fs: FileSet) -> None:
+    """Raise if the FileSet is clearly truncated (missing critical files)."""
+    paths = {f.path for f in fs.files}
+    missing = _REQUIRED_FILES - paths
+    if missing:
+        raise RuntimeError(
+            f"Engineer output is truncated — only {len(fs.files)} file(s) generated "
+            f"({', '.join(f.path for f in fs.files[:5])}). "
+            f"Missing required: {', '.join(sorted(missing))}. "
+            f"This usually means the LLM hit its output token limit. "
+            f"Set ENGINEER_MODEL to a model with higher output capacity "
+            f"(e.g. gemini/gemini-2.0-flash or groq/llama-3.3-70b-versatile)."
+        )
+
+
+# Allowed npm dependency prefixes — anything not matching gets stripped.
+_ALLOWED_DEPS = {
+    "react", "react-dom", "react-router-dom", "lucide-react",
+    "framer-motion", "sonner", "clsx", "tailwind-merge",
+    "class-variance-authority", "@radix-ui/", "@vitejs/plugin-react",
+    "vite", "typescript", "@types/react", "@types/react-dom",
+    "tailwindcss", "postcss", "autoprefixer", "react-hook-form", "zod",
+}
+
+
+def _is_allowed_dep(name: str) -> bool:
+    for allowed in _ALLOWED_DEPS:
+        if allowed.endswith("/"):
+            if name.startswith(allowed):
+                return True
+        elif name == allowed:
+            return True
+    return False
+
+
+def _sanitize_fileset(fs: FileSet) -> FileSet:
+    """Strip hallucinated npm packages from package.json."""
+    for f in fs.files:
+        if f.path.endswith("package.json"):
+            try:
+                pkg = json.loads(f.content)
+            except (json.JSONDecodeError, TypeError):
+                continue
+            changed = False
+            for key in ("dependencies", "devDependencies"):
+                if key in pkg and isinstance(pkg[key], dict):
+                    cleaned = {
+                        k: v for k, v in pkg[key].items() if _is_allowed_dep(k)
+                    }
+                    if len(cleaned) != len(pkg[key]):
+                        pkg[key] = cleaned
+                        changed = True
+            if changed:
+                f.content = json.dumps(pkg, indent=2)
+    return fs
 
 
 def _run_critic(

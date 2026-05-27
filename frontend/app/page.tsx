@@ -152,6 +152,7 @@ export default function Page() {
           input={input}
           onInput={setInput}
           onSend={onSend}
+          onAddMessage={(msg) => setMessages((m) => [...m, msg])}
           hasProject={!!project}
           onPickExample={(s) => setInput(s)}
           onPickSuggestion={(s) => sendPrompt(s)}

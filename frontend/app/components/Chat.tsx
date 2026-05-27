@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-import { optimizePrompt, type AgentStep, type PaletteColor } from "../lib/api";
+import { optimizePrompt, generateImage, type AgentStep, type PaletteColor } from "../lib/api";
 
 export type Message = {
   role: "user" | "assistant" | "system";
@@ -23,6 +23,7 @@ type Props = {
   input: string;
   onInput: (v: string) => void;
   onSend: () => void;
+  onAddMessage?: (msg: Message) => void;
   hasProject: boolean;
   onPickExample?: (s: string) => void;
   onPickSuggestion?: (s: string) => void;
@@ -35,10 +36,12 @@ const EXAMPLES = [
   "a pomodoro timer",
 ];
 
-export function Chat({ messages, loading, input, onInput, onSend, hasProject, onPickExample, onPickSuggestion }: Props) {
+export function Chat({ messages, loading, input, onInput, onSend, onAddMessage, hasProject, onPickExample, onPickSuggestion }: Props) {
   const endRef = useRef<HTMLDivElement>(null);
   const [optimizing, setOptimizing] = useState(false);
   const [optimizeError, setOptimizeError] = useState<string | null>(null);
+  const [imageMode, setImageMode] = useState(false);
+  const [generatingImage, setGeneratingImage] = useState(false);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -63,6 +66,27 @@ export function Chat({ messages, loading, input, onInput, onSend, hasProject, on
       setOptimizeError(msg);
     } finally {
       setOptimizing(false);
+    }
+  }
+
+  async function handleGenerateImage() {
+    const prompt = input.trim();
+    if (!prompt || generatingImage || loading) return;
+    setGeneratingImage(true);
+    onAddMessage?.({ role: "user", content: prompt });
+    onInput("");
+    try {
+      const res = await generateImage(prompt);
+      onAddMessage?.({
+        role: "assistant",
+        content: `Here's your generated image:\n${res.image_url}`,
+        intent: "image",
+      });
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Image generation failed";
+      onAddMessage?.({ role: "system", content: `Error: ${msg}` });
+    } finally {
+      setGeneratingImage(false);
     }
   }
 
@@ -111,7 +135,11 @@ export function Chat({ messages, loading, input, onInput, onSend, hasProject, on
   function onKey(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      onSend();
+      if (imageMode) {
+        handleGenerateImage();
+      } else {
+        onSend();
+      }
     }
   }
 
@@ -261,39 +289,69 @@ export function Chat({ messages, loading, input, onInput, onSend, hasProject, on
           )}
         </AnimatePresence>
         <div className="composer-inner">
+          <button
+            type="button"
+            className={`mode-toggle ${imageMode ? "active" : ""}`}
+            onClick={() => setImageMode(!imageMode)}
+            title={imageMode ? "Switch to Build mode" : "Switch to Image generation"}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
+          </button>
           <motion.textarea
             value={input}
             onChange={(e) => onInput(e.target.value)}
             onKeyDown={onKey}
-            placeholder={hasProject ? "Describe a change..." : "Describe what you want to build..."}
-            disabled={loading || optimizing}
+            placeholder={
+              imageMode
+                ? "Describe an image to generate..."
+                : hasProject
+                  ? "Describe a change..."
+                  : "Describe what you want to build..."
+            }
+            disabled={loading || optimizing || generatingImage}
             rows={1}
-            animate={optimizing ? { opacity: 0.55 } : { opacity: 1 }}
+            animate={optimizing || generatingImage ? { opacity: 0.55 } : { opacity: 1 }}
             transition={{ duration: 0.18 }}
           />
-          <button
-            type="button"
-            className="optimize-btn"
-            onClick={handleOptimize}
-            disabled={optimizing || loading || !input.trim()}
-            title="Expand your prompt with AI"
-            aria-busy={optimizing}
-          >
-            {optimizing ? (
-              <span className="optimize-loading">
-                <span className="optimize-spinner" aria-hidden />
-                <span>Optimizing...</span>
-              </span>
-            ) : (
-              <>
-                <span className="optimize-spark" aria-hidden>✦</span>
-                <span>Optimize</span>
-              </>
-            )}
-          </button>
-          <button onClick={onSend} disabled={loading || optimizing || !input.trim()}>
-            {loading ? "..." : hasProject ? "Update" : "Build"}
-          </button>
+          {!imageMode && (
+            <button
+              type="button"
+              className="optimize-btn"
+              onClick={handleOptimize}
+              disabled={optimizing || loading || !input.trim()}
+              title="Expand your prompt with AI"
+              aria-busy={optimizing}
+            >
+              {optimizing ? (
+                <span className="optimize-loading">
+                  <span className="optimize-spinner" aria-hidden />
+                  <span>Optimizing...</span>
+                </span>
+              ) : (
+                <>
+                  <span className="optimize-spark" aria-hidden>✦</span>
+                  <span>Optimize</span>
+                </>
+              )}
+            </button>
+          )}
+          {imageMode ? (
+            <button
+              onClick={handleGenerateImage}
+              disabled={generatingImage || !input.trim()}
+              className="image-gen-btn"
+            >
+              {generatingImage ? "Generating..." : "Generate"}
+            </button>
+          ) : (
+            <button onClick={onSend} disabled={loading || optimizing || !input.trim()}>
+              {loading ? "..." : hasProject ? "Update" : "Build"}
+            </button>
+          )}
         </div>
       </div>
     </div>

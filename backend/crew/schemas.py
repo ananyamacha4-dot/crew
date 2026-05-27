@@ -95,6 +95,12 @@ class PageSpec(BaseModel):
     @field_validator("sections", mode="before")
     @classmethod
     def _coerce_sections(cls, value: object) -> object:
+        # LLM sometimes emits a dict {"hero": "...", "features-grid": {...}}
+        # instead of a list ["hero", "features-grid"]. Extract the keys.
+        if isinstance(value, dict):
+            return list(value.keys())
+        if isinstance(value, str):
+            return [s.strip() for s in value.split(",") if s.strip()]
         return _coerce_to_string_list(value)
 
 
@@ -234,9 +240,32 @@ class FeatureBlock(BaseModel):
 
 class Testimonial(BaseModel):
     quote: str
-    author: str
-    role: str
-    company: str
+    author: str = ""
+    role: str = ""
+    company: str = ""
+
+    @model_validator(mode="before")
+    @classmethod
+    def _fill_missing_fields(cls, data: Any) -> Any:
+        if not isinstance(data, dict):
+            return data
+        author = data.get("author", "") or ""
+        role = data.get("role", "") or ""
+        company = data.get("company", "") or ""
+        # LLM often puts "Role at Company" in author — split it out.
+        if author and (not role or not company):
+            if " at " in author:
+                parts = author.rsplit(" at ", 1)
+                if not role:
+                    data["role"] = parts[0].strip()
+                if not company:
+                    data["company"] = parts[1].strip()
+            elif not role:
+                data["role"] = author
+        # Also accept "name" as alias for "author"
+        if not data.get("author") and data.get("name"):
+            data["author"] = data["name"]
+        return data
 
 
 class PricingTier(BaseModel):

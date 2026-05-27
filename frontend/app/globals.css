@@ -666,6 +666,40 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: #4a5568;
 }
 
+/* --- Image mode toggle -------------------------------- */
+
+.mode-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 1px solid #1e2a3a !important;
+  border-radius: 10px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.mode-toggle:hover {
+  border-color: #2563eb !important;
+  color: #93a3b8;
+}
+
+.mode-toggle.active {
+  background: rgba(37, 99, 235, 0.15) !important;
+  border-color: #2563eb !important;
+  color: #60a5fa;
+}
+
+.image-gen-btn {
+  background: linear-gradient(135deg, #7c3aed, #2563eb) !important;
+}
+
 /* --- Optimize Prompt button -------------------------------- */
 
 .composer .optimize-btn {

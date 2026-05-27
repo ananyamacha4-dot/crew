@@ -70,6 +70,33 @@ export async function saveFile(
   if (!res.ok) throw new Error(await res.text());
 }
 
+// --- Image generation ---
+
+export type GenerateImageResponse = {
+  image_url: string;
+  prompt: string;
+  width: number;
+  height: number;
+  seed: number | null;
+};
+
+export async function generateImage(
+  prompt: string,
+  width = 1024,
+  height = 576,
+): Promise<GenerateImageResponse> {
+  const res = await fetch(`${BACKEND}/generate-image`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt, width, height }),
+  });
+  if (!res.ok) {
+    const detail = await res.text();
+    throw new Error(detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
 // --- Project history ---
 
 export type ProjectSummary = {

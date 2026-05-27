@@ -42,6 +42,7 @@ def build_engineer(model: str | None = None) -> Agent:
             "with strict types and zero errors."
         ),
         llm=model or _model(),
+        max_tokens=16384,
         allow_delegation=False,
         verbose=True,
     )

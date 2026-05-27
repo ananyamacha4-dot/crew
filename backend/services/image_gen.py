@@ -193,6 +193,55 @@ def _try_pollinations_cache(
         return None
 
 
+def _try_together(prompt: str, width: int, height: int, seed: int) -> str | None:
+    """Try Together.ai FLUX.1-schnell (free tier). Returns cached local URL or None."""
+    api_key = os.getenv("TOGETHER_API_KEY")
+    if not api_key:
+        return None
+    try:
+        from . import image_cache
+        key = image_cache.cache_key("together", prompt, width, height, seed)
+        path = image_cache.cached_path(key)
+        if path.exists() and path.stat().st_size > 0:
+            return image_cache.cached_url(key)
+
+        client = _get_http_client()
+        if client is None:
+            return None
+
+        resp = client.post(
+            "https://api.together.xyz/v1/images/generations",
+            headers={"Authorization": f"Bearer {api_key}"},
+            json={
+                "model": "black-forest-labs/FLUX.1-schnell-Free",
+                "prompt": prompt,
+                "width": min(width, 1024),
+                "height": min(height, 1024),
+                "steps": 4,
+                "n": 1,
+                "seed": seed,
+                "response_format": "b64_json",
+            },
+        )
+        if resp.status_code != 200:
+            _log.debug("Together returned %d: %s", resp.status_code, resp.text[:200])
+            return None
+
+        import base64
+        data_json = resp.json()
+        b64 = data_json.get("data", [{}])[0].get("b64_json")
+        if not b64:
+            return None
+        img_bytes = base64.b64decode(b64)
+        if len(img_bytes) < 100:
+            return None
+        image_cache.write_atomic(path, img_bytes)
+        return image_cache.cached_url(key)
+    except Exception as e:
+        _log.debug("Together image gen failed: %s", e)
+        return None
+
+
 def generate_image_url(
     prompt: str,
     *,
@@ -204,13 +253,11 @@ def generate_image_url(
 ) -> str:
     """Build an image URL the frontend can load directly via <img src>.
 
-    Provider routing (additive, fall-through):
-      1. If IMAGE_PROVIDER is "gemini" or "auto" (default), try Imagen 3:
-         hit the on-disk cache first, generate on miss, persist atomically.
-         On success returns `{PUBLIC_BACKEND_URL}/assets/<hash>.png`.
-      2. On any Gemini failure (no key, quota, timeout, region block, etc.),
-         fall through to the existing Pollinations URL builder — preserving
-         the pre-Imagen behavior exactly.
+    Provider chain (tries each, falls through on failure):
+      1. Gemini Imagen (if key present)
+      2. Together.ai FLUX.1-schnell (free tier, if key present)
+      3. Pollinations pre-fetch + cache (stable local URL)
+      4. Raw Pollinations URL (last-resort, always works)
     """
     prompt = (prompt or "").strip()
     if not prompt:
@@ -218,7 +265,7 @@ def generate_image_url(
     if seed is None:
         seed = random.randint(1, 10_000_000)
 
-    # --- Provider 1: Imagen 4 (Gemini) — high-quality images on paid Gemini ---
+    # --- Provider 1: Imagen 4 (Gemini) ---
     provider = os.getenv("IMAGE_PROVIDER", "auto").strip().lower()
     if provider in ("gemini", "auto"):
         try:
@@ -234,19 +281,20 @@ def generate_image_url(
                 image_cache.write_atomic(path, data)
                 return image_cache.cached_url(key)
         except Exception:
-            # Never crash callers — providers below are always reachable.
             pass
 
-    # --- Provider 2: Pollinations pre-fetch + cache (stable local URL) ---
-    # Pre-downloading the PNG during scaffold means the generated React app
-    # references a stable backend-served URL instead of a hot Pollinations
-    # CDN URL — so the preview never breaks when Pollinations is slow / down.
+    # --- Provider 2: Together.ai FLUX.1-schnell (free) ---
+    together_url = _try_together(prompt, width, height, seed)
+    if together_url:
+        return together_url
+
+    # --- Provider 3: Pollinations pre-fetch + cache ---
     if os.getenv("POLLINATIONS_PREFETCH", "true").strip().lower() != "false":
         cached = _try_pollinations_cache(prompt, width, height, seed, model, nologo)
         if cached:
             return cached
 
-    # --- Provider 3: raw Pollinations URL (last-resort fallback, unchanged) ---
+    # --- Provider 4: raw Pollinations URL (always reachable) ---
     return _pollinations_url(prompt, width, height, seed, model, nologo)
 
 
