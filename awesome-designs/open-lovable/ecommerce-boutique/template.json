@@ -1,0 +1,79 @@
+{
+  "key": "open-lovable-ecommerce",
+  "label": "Boutique Ecommerce",
+  "category": "ecommerce",
+  "sub_niche": "fashion",
+  "kind": "website",
+  "match_keywords": [
+    "boutique",
+    "ecommerce",
+    "e-commerce",
+    "online store",
+    "storefront",
+    "shop online",
+    "clothing store",
+    "fashion store",
+    "apparel store",
+    "online shop"
+  ],
+  "pages": [
+    {
+      "name": "Home",
+      "route": "/",
+      "sections": ["hero", "featured-collection", "brand-story", "press-strip", "newsletter"],
+      "purpose": "Set the brand mood and route guests to the shop."
+    },
+    {
+      "name": "Shop",
+      "route": "/shop",
+      "sections": ["filter-bar", "product-grid"],
+      "purpose": "Browse the full catalog with category filters."
+    },
+    {
+      "name": "Product",
+      "route": "/product",
+      "sections": ["product-gallery", "product-details", "add-to-cart"],
+      "purpose": "Detail page for a single hero product."
+    },
+    {
+      "name": "Cart",
+      "route": "/cart",
+      "sections": ["line-items", "totals", "checkout-cta"],
+      "purpose": "Review and proceed to checkout."
+    },
+    {
+      "name": "Lookbook",
+      "route": "/lookbook",
+      "sections": ["image-grid"],
+      "purpose": "Editorial photography of the collection."
+    },
+    {
+      "name": "About",
+      "route": "/about",
+      "sections": ["brand-story", "founder-note", "values"],
+      "purpose": "Origin story and brand ethos."
+    }
+  ],
+  "navigation": [
+    { "label": "Home", "route": "/" },
+    { "label": "Shop", "route": "/shop" },
+    { "label": "Lookbook", "route": "/lookbook" },
+    { "label": "About", "route": "/about" },
+    { "label": "Cart", "route": "/cart" }
+  ],
+  "design": {
+    "design_mode_hint": "warm_editorial",
+    "palette_hint": "cream background, ink black, single accent (terracotta or amber)",
+    "mood": ["editorial", "premium", "considered", "tactile"],
+    "fonts": { "display": "Playfair Display", "body": "Inter" },
+    "radius": "subtle"
+  },
+  "image_subjects": [
+    "fashion editorial neutral background",
+    "boutique storefront natural light",
+    "clothing flat lay top down",
+    "model wearing knitwear soft light",
+    "studio product photography fabric"
+  ],
+  "data_packs": ["fashion_products"]
+}

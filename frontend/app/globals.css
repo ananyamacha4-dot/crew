@@ -666,6 +666,137 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: #4a5568;
 }
 
+/* --- Optimize Prompt button -------------------------------- */
+
+.composer .optimize-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 14px;
+  height: 40px;
+  min-width: 110px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #f5f3ff;
+  border: 1px solid rgba(168, 85, 247, 0.45);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(59, 130, 246, 0.18)),
+    rgba(13, 18, 25, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow:
+    0 0 0 1px rgba(168, 85, 247, 0.15) inset,
+    0 6px 24px -8px rgba(139, 92, 246, 0.55),
+    0 0 18px rgba(99, 102, 241, 0.25);
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.composer .optimize-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(168, 85, 247, 0.7);
+  background:
+    linear-gradient(135deg, rgba(139, 92, 246, 0.32), rgba(59, 130, 246, 0.32)),
+    rgba(13, 18, 25, 0.6);
+  box-shadow:
+    0 0 0 1px rgba(168, 85, 247, 0.3) inset,
+    0 10px 30px -8px rgba(139, 92, 246, 0.75),
+    0 0 26px rgba(99, 102, 241, 0.4);
+}
+
+.composer .optimize-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.composer .optimize-btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(168, 85, 247, 0.6),
+    0 6px 24px -8px rgba(139, 92, 246, 0.55);
+}
+
+.composer .optimize-btn:disabled {
+  cursor: not-allowed;
+  color: #6b7280;
+  border-color: rgba(99, 102, 241, 0.15);
+  background:
+    linear-gradient(135deg, rgba(139, 92, 246, 0.06), rgba(59, 130, 246, 0.06)),
+    rgba(13, 18, 25, 0.5);
+  box-shadow: none;
+}
+
+.composer .optimize-btn .optimize-spark {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1;
+  color: #c4b5fd;
+  filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.7));
+  animation: optimize-spark-pulse 2.4s ease-in-out infinite;
+}
+
+.composer .optimize-btn:disabled .optimize-spark {
+  animation: none;
+  filter: none;
+  color: #4a5568;
+}
+
+@keyframes optimize-spark-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.15); }
+}
+
+.composer .optimize-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.composer .optimize-spinner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(196, 181, 253, 0.25);
+  border-top-color: #c4b5fd;
+  animation: optimize-spin 0.7s linear infinite;
+}
+
+@keyframes optimize-spin {
+  to { transform: rotate(360deg); }
+}
+
+.composer .optimize-error {
+  margin-bottom: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.4);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Hero (centered) variant: stack the Optimize button visually with the others */
+.shell.hero .composer .optimize-btn {
+  min-width: 120px;
+}
+
+/* Narrow screens: keep the row but let buttons shrink */
+@media (max-width: 520px) {
+  .composer .optimize-btn { min-width: 0; padding: 0 10px; }
+  .composer .optimize-btn span:not(.optimize-spark):not(.optimize-spinner) {
+    display: none;
+  }
+  .composer .optimize-btn .optimize-spark { font-size: 16px; }
+}
+
 /* --- artifact panel ---------------------------------------- */
 
 .artifact {

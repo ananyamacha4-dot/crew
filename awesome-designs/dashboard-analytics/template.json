@@ -1,0 +1,27 @@
+{
+  "key": "dashboard-analytics",
+  "label": "Dashboard Analytics",
+  "category": "saas",
+  "kind": "app",
+  "match_keywords": ["dashboard", "analytics", "metrics", "kpi", "bi", "reports"],
+  "pages": [
+    { "name": "Overview",  "route": "/",          "sections": ["sidebar-nav", "topbar", "stat-cards", "chart-panel", "recent-activity"] },
+    { "name": "Reports",   "route": "/reports",   "sections": ["sidebar-nav", "topbar", "filter-bar", "chart-panel", "data-table"] },
+    { "name": "Customers", "route": "/customers", "sections": ["sidebar-nav", "topbar", "data-table"] },
+    { "name": "Settings",  "route": "/settings",  "sections": ["sidebar-nav", "topbar", "settings-form"] }
+  ],
+  "navigation": [
+    { "label": "Overview", "route": "/" },
+    { "label": "Reports", "route": "/reports" },
+    { "label": "Customers", "route": "/customers" },
+    { "label": "Settings", "route": "/settings" }
+  ],
+  "design": {
+    "palette_hint": "linear-minimal",
+    "mood": ["data-dense", "neutral", "precise"],
+    "fonts": { "display": "Inter", "body": "Inter", "mono": "JetBrains Mono" },
+    "radius": "subtle"
+  },
+  "image_subjects": ["abstract chart pattern", "data visualization"],
+  "data_packs": ["dashboard_metrics", "customers_table"]
+}

@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(netstat -ano)",
-      "Bash(awk '{print $5}')"
+      "Bash(awk '{print $5}')",
+      "Bash(git ls-tree *)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('backend/crew/manager.py'\\).read\\(\\)\\); print\\('OK'\\)\")"
     ]
   }
 }

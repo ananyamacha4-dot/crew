@@ -41,7 +41,7 @@ export default function Page() {
     try {
       const res: GenerateResponse = await generate(prompt.trim(), project?.id ?? null);
 
-      if ((res.intent === "build" || res.intent === "design") && res.files.length > 0) {
+      if (res.files.length > 0) {
         setProject({
           id: res.project_id,
           name: res.name,

@@ -1,0 +1,838 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "key": "coffee-shop",
+      "label": "Coffee Shop",
+      "category": "hospitality",
+      "kind": "website",
+      "match_keywords": ["coffee", "cafe", "espresso", "barista", "roastery", "latte"],
+      "pages": [
+        { "name": "Home",     "route": "/",         "sections": ["hero", "featured-drinks", "story", "locations", "cta-band"] },
+        { "name": "Menu",     "route": "/menu",     "sections": ["menu-categories", "menu-grid"] },
+        { "name": "Shop",     "route": "/shop",     "sections": ["product-grid", "cart-drawer"] },
+        { "name": "About",    "route": "/about",    "sections": ["story", "team-grid", "values"] },
+        { "name": "Contact",  "route": "/contact",  "sections": ["contact-form", "locations", "hours"] },
+        { "name": "Cart",     "route": "/cart",     "sections": ["cart-table", "order-summary"] },
+        { "name": "Checkout", "route": "/checkout", "sections": ["checkout-form", "order-summary"] }
+      ],
+      "navigation": [
+        { "label": "Menu", "route": "/menu" },
+        { "label": "Shop", "route": "/shop" },
+        { "label": "About", "route": "/about" },
+        { "label": "Contact", "route": "/contact" }
+      ],
+      "design": {
+        "palette_hint": "warm-cream",
+        "mood": ["warm", "artisanal", "cozy"],
+        "fonts": { "display": "Fraunces", "body": "Inter" },
+        "radius": "soft"
+      },
+      "image_subjects": ["latte art in ceramic cup", "espresso machine close-up", "coffee beans roasting", "cozy cafe interior with warm lighting", "barista pouring milk", "pastries on wooden board"],
+      "data_packs": ["coffee_menu", "store_locations"]
+    },
+    {
+      "key": "restaurant",
+      "label": "Restaurant",
+      "category": "hospitality",
+      "kind": "website",
+      "match_keywords": ["restaurant", "bistro", "diner", "eatery", "fine dining", "trattoria"],
+      "pages": [
+        { "name": "Home",         "route": "/",             "sections": ["hero", "featured-dishes", "story", "reservation-cta"] },
+        { "name": "Menu",         "route": "/menu",         "sections": ["menu-categories", "menu-grid"] },
+        { "name": "Reservations", "route": "/reservations", "sections": ["booking-form", "hours"] },
+        { "name": "About",        "route": "/about",        "sections": ["story", "chef-bio", "team-grid"] },
+        { "name": "Gallery",      "route": "/gallery",      "sections": ["gallery-grid"] },
+        { "name": "Contact",      "route": "/contact",      "sections": ["contact-form", "locations", "hours"] }
+      ],
+      "navigation": [
+        { "label": "Menu", "route": "/menu" },
+        { "label": "Reservations", "route": "/reservations" },
+        { "label": "About", "route": "/about" },
+        { "label": "Gallery", "route": "/gallery" },
+        { "label": "Contact", "route": "/contact" }
+      ],
+      "design": {
+        "palette_hint": "editorial-warm",
+        "mood": ["elegant", "appetizing", "refined"],
+        "fonts": { "display": "Playfair Display", "body": "Inter" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["plated gourmet dish", "chef cooking in kitchen", "restaurant ambience candlelit", "wine glasses on table", "dessert plating", "fresh ingredients"],
+      "data_packs": ["restaurant_menu", "reservation_slots"]
+    },
+    {
+      "key": "fashion-store",
+      "label": "Fashion Store",
+      "category": "ecommerce",
+      "kind": "website",
+      "match_keywords": ["fashion", "clothing", "apparel", "boutique", "wear", "outfit", "streetwear"],
+      "pages": [
+        { "name": "Home",     "route": "/",            "sections": ["hero", "collection-grid", "lookbook", "newsletter"] },
+        { "name": "Shop",     "route": "/shop",        "sections": ["filter-sidebar", "product-grid"] },
+        { "name": "Product",  "route": "/product/:id", "sections": ["product-gallery", "product-details", "size-picker", "related-products"] },
+        { "name": "Cart",     "route": "/cart",        "sections": ["cart-table", "order-summary"] },
+        { "name": "Checkout", "route": "/checkout",    "sections": ["checkout-form", "order-summary"] },
+        { "name": "Lookbook", "route": "/lookbook",    "sections": ["gallery-grid"] },
+        { "name": "About",    "route": "/about",       "sections": ["story", "values"] }
+      ],
+      "navigation": [
+        { "label": "Shop", "route": "/shop" },
+        { "label": "Lookbook", "route": "/lookbook" },
+        { "label": "About", "route": "/about" }
+      ],
+      "design": {
+        "palette_hint": "editorial-mono",
+        "mood": ["bold", "minimal", "editorial"],
+        "fonts": { "display": "DM Serif Display", "body": "Inter" },
+        "radius": "sharp"
+      },
+      "image_subjects": ["fashion model in studio", "clothing product shot on white", "streetwear lookbook", "minimal boutique interior", "accessories flat lay"],
+      "data_packs": ["fashion_products", "size_chart"]
+    },
+    {
+      "key": "bakery",
+      "label": "Bakery",
+      "category": "hospitality",
+      "kind": "website",
+      "match_keywords": ["bakery", "patisserie", "pastry", "bread", "cakes"],
+      "pages": [
+        { "name": "Home",    "route": "/",        "sections": ["hero", "featured-products", "story", "locations"] },
+        { "name": "Menu",    "route": "/menu",    "sections": ["menu-categories", "menu-grid"] },
+        { "name": "Order",   "route": "/order",   "sections": ["product-grid", "cart-drawer"] },
+        { "name": "Custom",  "route": "/custom",  "sections": ["custom-form", "gallery-grid"] },
+        { "name": "About",   "route": "/about",   "sections": ["story", "team-grid"] },
+        { "name": "Contact", "route": "/contact", "sections": ["contact-form", "locations", "hours"] }
+      ],
+      "navigation": [
+        { "label": "Menu", "route": "/menu" },
+        { "label": "Order", "route": "/order" },
+        { "label": "Custom Cakes", "route": "/custom" },
+        { "label": "About", "route": "/about" }
+      ],
+      "design": {
+        "palette_hint": "pastel-cream",
+        "mood": ["soft", "sweet", "artisanal"],
+        "fonts": { "display": "Cormorant Garamond", "body": "Inter" },
+        "radius": "soft"
+      },
+      "image_subjects": ["fresh croissants on cooling rack", "decorated layer cake", "sourdough bread loaves", "bakery display case", "macarons assortment"],
+      "data_packs": ["bakery_menu"]
+    },
+    {
+      "key": "ai-saas",
+      "label": "AI SaaS",
+      "category": "saas",
+      "kind": "landing",
+      "match_keywords": ["ai", "saas", "ml platform", "ai platform", "llm", "ai tool", "ai api"],
+      "pages": [
+        { "name": "Home",      "route": "/",         "sections": ["hero", "logo-cloud", "features-grid", "feature-spotlight", "how-it-works", "testimonials", "pricing-table", "cta-band"] },
+        { "name": "Features",  "route": "/features", "sections": ["feature-spotlight", "comparison-table"] },
+        { "name": "Pricing",   "route": "/pricing",  "sections": ["pricing-table", "faq"] },
+        { "name": "Docs",      "route": "/docs",     "sections": ["sidebar-nav", "doc-content"] },
+        { "name": "Blog",      "route": "/blog",     "sections": ["blog-grid"] },
+        { "name": "Login",     "route": "/login",    "sections": ["auth-form"] },
+        { "name": "Signup",    "route": "/signup",   "sections": ["auth-form"] }
+      ],
+      "navigation": [
+        { "label": "Features", "route": "/features" },
+        { "label": "Pricing", "route": "/pricing" },
+        { "label": "Docs", "route": "/docs" },
+        { "label": "Blog", "route": "/blog" }
+      ],
+      "design": {
+        "palette_hint": "electric-dark",
+        "mood": ["futuristic", "confident", "intelligent"],
+        "fonts": { "display": "Inter", "body": "Inter", "mono": "JetBrains Mono" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["abstract neural network", "futuristic dashboard ui", "glowing data orb"],
+      "data_packs": ["saas_features", "saas_pricing"]
+    },
+    {
+      "key": "startup-landing",
+      "label": "Startup Landing",
+      "category": "marketing",
+      "kind": "landing",
+      "match_keywords": ["startup", "launch", "marketing site", "landing page", "product launch"],
+      "pages": [
+        { "name": "Home",    "route": "/",        "sections": ["hero", "stats-band", "features-grid", "how-it-works", "testimonials", "pricing-table", "faq", "cta-band"] },
+        { "name": "About",   "route": "/about",   "sections": ["story", "team-grid", "values"] },
+        { "name": "Contact", "route": "/contact", "sections": ["contact-form"] }
+      ],
+      "navigation": [
+        { "label": "Features", "route": "#features" },
+        { "label": "Pricing", "route": "#pricing" },
+        { "label": "About", "route": "/about" },
+        { "label": "Contact", "route": "/contact" }
+      ],
+      "design": {
+        "palette_hint": "linear-minimal",
+        "mood": ["clean", "confident", "modern"],
+        "fonts": { "display": "Inter", "body": "Inter" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["product mockup", "team collaboration", "abstract gradient"],
+      "data_packs": ["saas_features", "saas_pricing"]
+    },
+    {
+      "key": "music-streaming",
+      "label": "Music Streaming",
+      "category": "media",
+      "kind": "app",
+      "match_keywords": ["music", "spotify", "streaming", "playlist", "audio player", "song app"],
+      "pages": [
+        { "name": "Home",      "route": "/",            "sections": ["sidebar-nav", "topbar", "featured-row", "recently-played", "playlists-grid"] },
+        { "name": "Search",    "route": "/search",      "sections": ["sidebar-nav", "topbar", "search-bar", "results-grid"] },
+        { "name": "Library",   "route": "/library",     "sections": ["sidebar-nav", "topbar", "library-tabs", "track-list"] },
+        { "name": "Playlist",  "route": "/playlist/:id","sections": ["sidebar-nav", "playlist-header", "track-list", "now-playing-bar"] },
+        { "name": "Album",     "route": "/album/:id",   "sections": ["sidebar-nav", "album-header", "track-list", "now-playing-bar"] }
+      ],
+      "navigation": [
+        { "label": "Home", "route": "/" },
+        { "label": "Search", "route": "/search" },
+        { "label": "Library", "route": "/library" }
+      ],
+      "design": {
+        "palette_hint": "spotify-dark",
+        "mood": ["immersive", "energetic", "premium"],
+        "fonts": { "display": "Inter", "body": "Inter" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["album cover abstract", "concert lights", "vinyl record close-up", "music studio"],
+      "data_packs": ["music_tracks", "playlists"]
+    },
+    {
+      "key": "chat-application",
+      "label": "Chat Application",
+      "category": "communication",
+      "kind": "app",
+      "match_keywords": ["chat", "messaging", "slack", "discord", "messenger", "im app"],
+      "pages": [
+        { "name": "App",     "route": "/",          "sections": ["sidebar-nav", "channel-list", "message-pane", "composer"] },
+        { "name": "DM",      "route": "/dm/:id",    "sections": ["sidebar-nav", "dm-list", "message-pane", "composer"] },
+        { "name": "Channel", "route": "/c/:id",     "sections": ["sidebar-nav", "channel-header", "message-pane", "composer", "members-panel"] },
+        { "name": "Settings","route": "/settings",  "sections": ["sidebar-nav", "settings-form"] }
+      ],
+      "navigation": [
+        { "label": "Channels", "route": "/" },
+        { "label": "DMs", "route": "/dm/general" },
+        { "label": "Settings", "route": "/settings" }
+      ],
+      "design": {
+        "palette_hint": "slack-aubergine",
+        "mood": ["focused", "collaborative", "calm"],
+        "fonts": { "display": "Inter", "body": "Inter" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["abstract chat bubbles", "team collaboration ui"],
+      "data_packs": ["chat_users", "chat_messages"]
+    },
+    {
+      "key": "dashboard-analytics",
+      "label": "Dashboard Analytics",
+      "category": "saas",
+      "kind": "app",
+      "match_keywords": ["dashboard", "analytics", "metrics", "kpi", "bi", "reports"],
+      "pages": [
+        { "name": "Overview",  "route": "/",            "sections": ["sidebar-nav", "topbar", "stat-cards", "chart-panel", "recent-activity"] },
+        { "name": "Reports",   "route": "/reports",     "sections": ["sidebar-nav", "topbar", "filter-bar", "chart-panel", "data-table"] },
+        { "name": "Customers", "route": "/customers",   "sections": ["sidebar-nav", "topbar", "data-table"] },
+        { "name": "Settings",  "route": "/settings",    "sections": ["sidebar-nav", "topbar", "settings-form"] }
+      ],
+      "navigation": [
+        { "label": "Overview", "route": "/" },
+        { "label": "Reports", "route": "/reports" },
+        { "label": "Customers", "route": "/customers" },
+        { "label": "Settings", "route": "/settings" }
+      ],
+      "design": {
+        "palette_hint": "linear-minimal",
+        "mood": ["data-dense", "neutral", "precise"],
+        "fonts": { "display": "Inter", "body": "Inter", "mono": "JetBrains Mono" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["abstract chart pattern", "data visualization"],
+      "data_packs": ["dashboard_metrics", "customers_table"]
+    },
+    {
+      "key": "kanban-board",
+      "label": "Kanban Board",
+      "category": "productivity",
+      "kind": "app",
+      "match_keywords": ["kanban", "trello", "task board", "project board", "scrum board"],
+      "pages": [
+        { "name": "Board",    "route": "/",           "sections": ["sidebar-nav", "topbar", "kanban-columns"] },
+        { "name": "Project",  "route": "/p/:id",      "sections": ["sidebar-nav", "topbar", "kanban-columns", "card-drawer"] },
+        { "name": "Settings", "route": "/settings",   "sections": ["sidebar-nav", "topbar", "settings-form"] }
+      ],
+      "navigation": [
+        { "label": "Boards", "route": "/" },
+        { "label": "Settings", "route": "/settings" }
+      ],
+      "design": {
+        "palette_hint": "soft-modern",
+        "mood": ["organized", "calm", "productive"],
+        "fonts": { "display": "Inter", "body": "Inter" },
+        "radius": "soft"
+      },
+      "image_subjects": ["sticky notes on wall", "workflow diagram"],
+      "data_packs": ["kanban_columns", "kanban_cards"]
+    },
+    {
+      "key": "expense-tracker",
+      "label": "Expense Tracker",
+      "category": "productivity",
+      "kind": "app",
+      "match_keywords": ["expense", "budget", "finance tracker", "spending tracker", "money tracker"],
+      "pages": [
+        { "name": "Overview",     "route": "/",             "sections": ["sidebar-nav", "topbar", "stat-cards", "chart-panel", "recent-transactions"] },
+        { "name": "Transactions", "route": "/transactions", "sections": ["sidebar-nav", "topbar", "filter-bar", "data-table"] },
+        { "name": "Budgets",      "route": "/budgets",      "sections": ["sidebar-nav", "topbar", "budget-cards"] },
+        { "name": "Settings",     "route": "/settings",     "sections": ["sidebar-nav", "topbar", "settings-form"] }
+      ],
+      "navigation": [
+        { "label": "Overview", "route": "/" },
+        { "label": "Transactions", "route": "/transactions" },
+        { "label": "Budgets", "route": "/budgets" }
+      ],
+      "design": {
+        "palette_hint": "zinc-emerald",
+        "mood": ["trustworthy", "clean", "focused"],
+        "fonts": { "display": "Inter", "body": "Inter", "mono": "JetBrains Mono" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["abstract finance chart"],
+      "data_packs": ["expense_categories", "expense_transactions"]
+    },
+    {
+      "key": "portfolio",
+      "label": "Portfolio",
+      "category": "personal",
+      "kind": "website",
+      "match_keywords": ["portfolio", "personal site", "freelancer site", "designer portfolio", "developer portfolio"],
+      "pages": [
+        { "name": "Home",     "route": "/",        "sections": ["hero", "selected-work", "about-snippet", "cta-band"] },
+        { "name": "Work",     "route": "/work",    "sections": ["work-grid"] },
+        { "name": "Project",  "route": "/work/:id","sections": ["project-hero", "project-body", "next-project"] },
+        { "name": "About",    "route": "/about",   "sections": ["story", "skills", "timeline"] },
+        { "name": "Contact",  "route": "/contact", "sections": ["contact-form"] }
+      ],
+      "navigation": [
+        { "label": "Work", "route": "/work" },
+        { "label": "About", "route": "/about" },
+        { "label": "Contact", "route": "/contact" }
+      ],
+      "design": {
+        "palette_hint": "editorial-mono",
+        "mood": ["personal", "confident", "minimal"],
+        "fonts": { "display": "Fraunces", "body": "Inter" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["abstract portrait", "design mockup", "creative workspace"],
+      "data_packs": ["portfolio_projects"]
+    },
+    {
+      "key": "agency",
+      "label": "Agency",
+      "category": "services",
+      "kind": "website",
+      "match_keywords": ["agency", "studio", "consultancy", "design agency", "marketing agency"],
+      "pages": [
+        { "name": "Home",     "route": "/",            "sections": ["hero", "services-grid", "case-studies", "logo-cloud", "testimonials", "cta-band"] },
+        { "name": "Services", "route": "/services",    "sections": ["service-spotlight", "process"] },
+        { "name": "Work",     "route": "/work",        "sections": ["case-study-grid"] },
+        { "name": "Case",     "route": "/work/:id",    "sections": ["case-hero", "case-body", "next-case"] },
+        { "name": "About",    "route": "/about",       "sections": ["story", "team-grid", "values"] },
+        { "name": "Contact",  "route": "/contact",     "sections": ["contact-form"] }
+      ],
+      "navigation": [
+        { "label": "Services", "route": "/services" },
+        { "label": "Work", "route": "/work" },
+        { "label": "About", "route": "/about" },
+        { "label": "Contact", "route": "/contact" }
+      ],
+      "design": {
+        "palette_hint": "editorial-warm",
+        "mood": ["confident", "creative", "established"],
+        "fonts": { "display": "Fraunces", "body": "Inter" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["creative studio workspace", "brand identity mockup", "team meeting"],
+      "data_packs": ["agency_services", "agency_case_studies"]
+    },
+    {
+      "key": "real-estate",
+      "label": "Real Estate",
+      "category": "marketplace",
+      "kind": "website",
+      "match_keywords": ["real estate", "property", "realty", "homes for sale", "apartments"],
+      "pages": [
+        { "name": "Home",      "route": "/",            "sections": ["hero", "search-bar", "featured-listings", "neighborhoods", "cta-band"] },
+        { "name": "Listings",  "route": "/listings",    "sections": ["filter-sidebar", "listings-grid", "map-panel"] },
+        { "name": "Listing",   "route": "/listings/:id","sections": ["listing-gallery", "listing-details", "agent-card", "similar-listings"] },
+        { "name": "Agents",    "route": "/agents",      "sections": ["agent-grid"] },
+        { "name": "Contact",   "route": "/contact",     "sections": ["contact-form"] }
+      ],
+      "navigation": [
+        { "label": "Buy", "route": "/listings" },
+        { "label": "Rent", "route": "/listings?type=rent" },
+        { "label": "Agents", "route": "/agents" },
+        { "label": "Contact", "route": "/contact" }
+      ],
+      "design": {
+        "palette_hint": "warm-cream",
+        "mood": ["aspirational", "trustworthy", "warm"],
+        "fonts": { "display": "Cormorant Garamond", "body": "Inter" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["modern house exterior", "luxury living room", "kitchen interior", "city skyline at dusk"],
+      "data_packs": ["property_listings", "real_estate_agents"]
+    },
+    {
+      "key": "photography",
+      "label": "Photography",
+      "category": "personal",
+      "kind": "website",
+      "match_keywords": ["photography", "photographer", "photo portfolio", "wedding photographer"],
+      "pages": [
+        { "name": "Home",     "route": "/",            "sections": ["hero-image", "gallery-preview", "about-snippet"] },
+        { "name": "Portfolio","route": "/portfolio",   "sections": ["gallery-grid"] },
+        { "name": "Series",   "route": "/series/:id",  "sections": ["series-hero", "image-gallery"] },
+        { "name": "About",    "route": "/about",       "sections": ["story", "timeline"] },
+        { "name": "Contact",  "route": "/contact",     "sections": ["contact-form"] }
+      ],
+      "navigation": [
+        { "label": "Portfolio", "route": "/portfolio" },
+        { "label": "About", "route": "/about" },
+        { "label": "Contact", "route": "/contact" }
+      ],
+      "design": {
+        "palette_hint": "editorial-mono",
+        "mood": ["editorial", "moody", "minimal"],
+        "fonts": { "display": "Cormorant Garamond", "body": "Inter" },
+        "radius": "sharp"
+      },
+      "image_subjects": ["dramatic portrait", "landscape sunrise", "street photography", "wedding moment"],
+      "data_packs": ["photo_series"]
+    },
+    {
+      "key": "fitness",
+      "label": "Fitness",
+      "category": "lifestyle",
+      "kind": "website",
+      "match_keywords": ["fitness", "gym", "workout", "personal trainer", "yoga studio"],
+      "pages": [
+        { "name": "Home",     "route": "/",         "sections": ["hero", "programs-grid", "transformation-gallery", "testimonials", "cta-band"] },
+        { "name": "Programs", "route": "/programs", "sections": ["program-spotlight"] },
+        { "name": "Schedule", "route": "/schedule", "sections": ["schedule-grid", "booking-form"] },
+        { "name": "Coaches",  "route": "/coaches",  "sections": ["team-grid"] },
+        { "name": "Pricing",  "route": "/pricing",  "sections": ["pricing-table", "faq"] },
+        { "name": "Contact",  "route": "/contact",  "sections": ["contact-form", "locations"] }
+      ],
+      "navigation": [
+        { "label": "Programs", "route": "/programs" },
+        { "label": "Schedule", "route": "/schedule" },
+        { "label": "Coaches", "route": "/coaches" },
+        { "label": "Pricing", "route": "/pricing" }
+      ],
+      "design": {
+        "palette_hint": "neon-energy",
+        "mood": ["energetic", "bold", "motivating"],
+        "fonts": { "display": "Anton", "body": "Inter" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["athlete training", "gym interior", "yoga pose silhouette", "kettlebell"],
+      "data_packs": ["fitness_programs"]
+    },
+    {
+      "key": "travel-booking",
+      "label": "Travel Booking",
+      "category": "marketplace",
+      "kind": "website",
+      "match_keywords": ["travel", "trip booking", "vacation", "tours", "destinations"],
+      "pages": [
+        { "name": "Home",        "route": "/",                 "sections": ["hero", "search-bar", "featured-destinations", "trending-tours", "testimonials"] },
+        { "name": "Destinations","route": "/destinations",     "sections": ["destination-grid"] },
+        { "name": "Destination", "route": "/destinations/:id", "sections": ["destination-hero", "highlights", "tours-list"] },
+        { "name": "Tours",       "route": "/tours",            "sections": ["filter-sidebar", "tour-grid"] },
+        { "name": "Tour",        "route": "/tours/:id",        "sections": ["tour-gallery", "itinerary", "booking-widget"] },
+        { "name": "Contact",     "route": "/contact",          "sections": ["contact-form"] }
+      ],
+      "navigation": [
+        { "label": "Destinations", "route": "/destinations" },
+        { "label": "Tours", "route": "/tours" },
+        { "label": "Contact", "route": "/contact" }
+      ],
+      "design": {
+        "palette_hint": "sky-warm",
+        "mood": ["adventurous", "inviting", "vivid"],
+        "fonts": { "display": "Fraunces", "body": "Inter" },
+        "radius": "soft"
+      },
+      "image_subjects": ["mountain landscape", "tropical beach", "city street travel", "hot air balloons", "ancient temple"],
+      "data_packs": ["travel_destinations", "travel_tours"]
+    },
+    {
+      "key": "hotel",
+      "label": "Hotel",
+      "category": "hospitality",
+      "kind": "website",
+      "match_keywords": ["hotel", "resort", "boutique hotel", "lodging", "inn"],
+      "pages": [
+        { "name": "Home",         "route": "/",             "sections": ["hero-video", "intro", "rooms-grid", "amenities", "testimonials", "booking-cta"] },
+        { "name": "Rooms",        "route": "/rooms",        "sections": ["rooms-grid"] },
+        { "name": "Room",         "route": "/rooms/:id",    "sections": ["room-gallery", "room-details", "booking-widget"] },
+        { "name": "Amenities",    "route": "/amenities",    "sections": ["amenities-grid"] },
+        { "name": "Dining",       "route": "/dining",       "sections": ["dining-spotlight", "menu-preview"] },
+        { "name": "Reservations", "route": "/reservations", "sections": ["booking-form"] },
+        { "name": "Contact",      "route": "/contact",      "sections": ["contact-form", "locations"] }
+      ],
+      "navigation": [
+        { "label": "Rooms", "route": "/rooms" },
+        { "label": "Amenities", "route": "/amenities" },
+        { "label": "Dining", "route": "/dining" },
+        { "label": "Reservations", "route": "/reservations" }
+      ],
+      "design": {
+        "palette_hint": "luxury-dark",
+        "mood": ["luxurious", "serene", "refined"],
+        "fonts": { "display": "Cormorant Garamond", "body": "Inter" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["luxury hotel room", "infinity pool sunset", "spa interior", "hotel lobby"],
+      "data_packs": ["hotel_rooms", "hotel_amenities"]
+    },
+    {
+      "key": "ecommerce",
+      "label": "E-commerce",
+      "category": "ecommerce",
+      "kind": "website",
+      "match_keywords": ["ecommerce", "online store", "shop", "marketplace", "store"],
+      "pages": [
+        { "name": "Home",     "route": "/",            "sections": ["hero", "category-grid", "featured-products", "testimonials", "newsletter"] },
+        { "name": "Shop",     "route": "/shop",        "sections": ["filter-sidebar", "product-grid"] },
+        { "name": "Product",  "route": "/product/:id", "sections": ["product-gallery", "product-details", "related-products"] },
+        { "name": "Cart",     "route": "/cart",        "sections": ["cart-table", "order-summary"] },
+        { "name": "Checkout", "route": "/checkout",    "sections": ["checkout-form", "order-summary"] },
+        { "name": "Account",  "route": "/account",     "sections": ["account-tabs", "orders-list"] }
+      ],
+      "navigation": [
+        { "label": "Shop", "route": "/shop" },
+        { "label": "Cart", "route": "/cart" },
+        { "label": "Account", "route": "/account" }
+      ],
+      "design": {
+        "palette_hint": "soft-modern",
+        "mood": ["clean", "trustworthy", "vibrant"],
+        "fonts": { "display": "Inter", "body": "Inter" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["product on white background", "lifestyle product shot", "packaging design"],
+      "data_packs": ["ecommerce_products"]
+    },
+    {
+      "key": "furniture-store",
+      "label": "Furniture Store",
+      "category": "ecommerce",
+      "kind": "website",
+      "match_keywords": ["furniture", "interior", "home decor", "sofa store", "scandinavian"],
+      "pages": [
+        { "name": "Home",     "route": "/",            "sections": ["hero", "category-grid", "room-inspiration", "featured-products"] },
+        { "name": "Shop",     "route": "/shop",        "sections": ["filter-sidebar", "product-grid"] },
+        { "name": "Product",  "route": "/product/:id", "sections": ["product-gallery", "product-details", "material-info", "related-products"] },
+        { "name": "Rooms",    "route": "/rooms",       "sections": ["room-spotlight"] },
+        { "name": "About",    "route": "/about",       "sections": ["story", "craft", "team-grid"] },
+        { "name": "Contact",  "route": "/contact",     "sections": ["contact-form", "locations"] }
+      ],
+      "navigation": [
+        { "label": "Shop", "route": "/shop" },
+        { "label": "Rooms", "route": "/rooms" },
+        { "label": "About", "route": "/about" }
+      ],
+      "design": {
+        "palette_hint": "warm-cream",
+        "mood": ["warm", "minimal", "natural"],
+        "fonts": { "display": "Fraunces", "body": "Inter" },
+        "radius": "soft"
+      },
+      "image_subjects": ["scandinavian living room", "wooden chair product shot", "minimalist bedroom", "natural materials"],
+      "data_packs": ["furniture_products"]
+    },
+    {
+      "key": "car-showcase",
+      "label": "Car Showcase",
+      "category": "marketing",
+      "kind": "website",
+      "match_keywords": ["car", "automobile", "auto", "vehicle", "ev", "tesla style"],
+      "pages": [
+        { "name": "Home",     "route": "/",         "sections": ["hero-video", "model-spotlight", "performance-specs", "design-features", "configurator-cta"] },
+        { "name": "Models",   "route": "/models",   "sections": ["model-grid"] },
+        { "name": "Model",    "route": "/models/:id","sections": ["model-hero", "specs-table", "features", "gallery-grid", "configurator-cta"] },
+        { "name": "Configure","route": "/configure","sections": ["configurator", "summary-panel"] },
+        { "name": "Locations","route": "/locations","sections": ["locations", "contact-form"] }
+      ],
+      "navigation": [
+        { "label": "Models", "route": "/models" },
+        { "label": "Configure", "route": "/configure" },
+        { "label": "Locations", "route": "/locations" }
+      ],
+      "design": {
+        "palette_hint": "luxury-dark",
+        "mood": ["sleek", "futuristic", "powerful"],
+        "fonts": { "display": "Inter", "body": "Inter" },
+        "radius": "sharp"
+      },
+      "image_subjects": ["luxury car studio shot", "ev charging", "car interior dashboard", "car on mountain road"],
+      "data_packs": ["car_models"]
+    },
+    {
+      "key": "education-platform",
+      "label": "Education Platform",
+      "category": "saas",
+      "kind": "website",
+      "match_keywords": ["education", "course platform", "lms", "online learning", "coursera", "udemy"],
+      "pages": [
+        { "name": "Home",       "route": "/",            "sections": ["hero", "category-grid", "trending-courses", "instructor-spotlight", "testimonials", "cta-band"] },
+        { "name": "Courses",    "route": "/courses",     "sections": ["filter-sidebar", "course-grid"] },
+        { "name": "Course",     "route": "/courses/:id", "sections": ["course-hero", "curriculum", "instructor-card", "reviews", "enroll-widget"] },
+        { "name": "Instructors","route": "/instructors", "sections": ["instructor-grid"] },
+        { "name": "Dashboard",  "route": "/dashboard",   "sections": ["sidebar-nav", "topbar", "enrolled-courses", "progress-panel"] }
+      ],
+      "navigation": [
+        { "label": "Courses", "route": "/courses" },
+        { "label": "Instructors", "route": "/instructors" },
+        { "label": "Dashboard", "route": "/dashboard" }
+      ],
+      "design": {
+        "palette_hint": "soft-modern",
+        "mood": ["friendly", "trustworthy", "energizing"],
+        "fonts": { "display": "Inter", "body": "Inter" },
+        "radius": "soft"
+      },
+      "image_subjects": ["student studying", "lecture hall", "online learning ui", "books and laptop"],
+      "data_packs": ["courses", "instructors"]
+    },
+    {
+      "key": "movie-streaming",
+      "label": "Movie Streaming",
+      "category": "media",
+      "kind": "app",
+      "match_keywords": ["movies", "netflix", "streaming video", "tv shows", "film app"],
+      "pages": [
+        { "name": "Home",     "route": "/",          "sections": ["topbar", "hero-billboard", "row-trending", "row-action", "row-comedy", "row-drama"] },
+        { "name": "Browse",   "route": "/browse",    "sections": ["topbar", "filter-bar", "results-grid"] },
+        { "name": "Title",    "route": "/title/:id", "sections": ["topbar", "title-hero", "episodes-list", "similar-titles"] },
+        { "name": "Search",   "route": "/search",    "sections": ["topbar", "search-bar", "results-grid"] },
+        { "name": "My List",  "route": "/my-list",   "sections": ["topbar", "results-grid"] }
+      ],
+      "navigation": [
+        { "label": "Home", "route": "/" },
+        { "label": "Browse", "route": "/browse" },
+        { "label": "Search", "route": "/search" },
+        { "label": "My List", "route": "/my-list" }
+      ],
+      "design": {
+        "palette_hint": "luxury-dark",
+        "mood": ["cinematic", "immersive", "premium"],
+        "fonts": { "display": "Inter", "body": "Inter" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["movie still cinematic", "film poster", "popcorn close-up", "cinema interior"],
+      "data_packs": ["movies_catalog"]
+    },
+    {
+      "key": "food-delivery",
+      "label": "Food Delivery",
+      "category": "marketplace",
+      "kind": "app",
+      "match_keywords": ["food delivery", "doordash", "uber eats", "restaurant delivery", "food app"],
+      "pages": [
+        { "name": "Home",         "route": "/",                   "sections": ["topbar", "location-bar", "category-pills", "restaurant-grid"] },
+        { "name": "Restaurant",   "route": "/restaurants/:id",    "sections": ["restaurant-hero", "menu-categories", "menu-grid", "cart-drawer"] },
+        { "name": "Cart",         "route": "/cart",               "sections": ["cart-table", "order-summary"] },
+        { "name": "Checkout",     "route": "/checkout",           "sections": ["address-form", "payment-form", "order-summary"] },
+        { "name": "Order Status", "route": "/orders/:id",         "sections": ["order-tracker", "order-summary"] }
+      ],
+      "navigation": [
+        { "label": "Restaurants", "route": "/" },
+        { "label": "Cart", "route": "/cart" },
+        { "label": "Orders", "route": "/orders" }
+      ],
+      "design": {
+        "palette_hint": "vibrant-warm",
+        "mood": ["appetizing", "fast", "friendly"],
+        "fonts": { "display": "Inter", "body": "Inter" },
+        "radius": "soft"
+      },
+      "image_subjects": ["burger close-up", "pizza top down", "noodles bowl", "delivery driver scooter"],
+      "data_packs": ["delivery_restaurants", "restaurant_menu"]
+    },
+    {
+      "key": "crypto-dashboard",
+      "label": "Crypto Dashboard",
+      "category": "fintech",
+      "kind": "app",
+      "match_keywords": ["crypto", "bitcoin", "coinbase", "crypto dashboard", "trading", "wallet"],
+      "pages": [
+        { "name": "Overview",  "route": "/",            "sections": ["sidebar-nav", "topbar", "portfolio-stats", "chart-panel", "watchlist", "recent-trades"] },
+        { "name": "Markets",   "route": "/markets",     "sections": ["sidebar-nav", "topbar", "filter-bar", "markets-table"] },
+        { "name": "Trade",     "route": "/trade/:pair", "sections": ["sidebar-nav", "topbar", "chart-panel", "order-book", "trade-form"] },
+        { "name": "Wallet",    "route": "/wallet",      "sections": ["sidebar-nav", "topbar", "wallet-balances", "transactions-table"] }
+      ],
+      "navigation": [
+        { "label": "Overview", "route": "/" },
+        { "label": "Markets", "route": "/markets" },
+        { "label": "Trade", "route": "/trade/BTC-USD" },
+        { "label": "Wallet", "route": "/wallet" }
+      ],
+      "design": {
+        "palette_hint": "neon-dark",
+        "mood": ["technical", "alert", "premium"],
+        "fonts": { "display": "Inter", "body": "Inter", "mono": "JetBrains Mono" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["abstract candlestick chart", "neon trading floor"],
+      "data_packs": ["crypto_assets"]
+    },
+    {
+      "key": "banking-app",
+      "label": "Banking App",
+      "category": "fintech",
+      "kind": "app",
+      "match_keywords": ["bank", "banking", "neobank", "finance app", "money app", "stripe", "revolut"],
+      "pages": [
+        { "name": "Overview",     "route": "/",             "sections": ["sidebar-nav", "topbar", "account-cards", "chart-panel", "recent-transactions"] },
+        { "name": "Accounts",     "route": "/accounts",     "sections": ["sidebar-nav", "topbar", "account-list", "transactions-table"] },
+        { "name": "Transfer",     "route": "/transfer",     "sections": ["sidebar-nav", "topbar", "transfer-form"] },
+        { "name": "Cards",        "route": "/cards",        "sections": ["sidebar-nav", "topbar", "card-stack", "card-controls"] },
+        { "name": "Settings",     "route": "/settings",     "sections": ["sidebar-nav", "topbar", "settings-form"] }
+      ],
+      "navigation": [
+        { "label": "Overview", "route": "/" },
+        { "label": "Accounts", "route": "/accounts" },
+        { "label": "Transfer", "route": "/transfer" },
+        { "label": "Cards", "route": "/cards" }
+      ],
+      "design": {
+        "palette_hint": "zinc-emerald",
+        "mood": ["trustworthy", "premium", "calm"],
+        "fonts": { "display": "Inter", "body": "Inter", "mono": "JetBrains Mono" },
+        "radius": "subtle"
+      },
+      "image_subjects": ["abstract finance pattern", "credit card mockup"],
+      "data_packs": ["bank_accounts", "bank_transactions"]
+    },
+    {
+      "key": "medical-clinic",
+      "label": "Medical Clinic",
+      "category": "services",
+      "kind": "website",
+      "match_keywords": ["medical", "clinic", "doctor", "dental", "hospital", "healthcare"],
+      "pages": [
+        { "name": "Home",        "route": "/",             "sections": ["hero", "services-grid", "doctors-spotlight", "testimonials", "booking-cta"] },
+        { "name": "Services",    "route": "/services",     "sections": ["service-spotlight"] },
+        { "name": "Doctors",     "route": "/doctors",      "sections": ["doctor-grid"] },
+        { "name": "Doctor",      "route": "/doctors/:id",  "sections": ["doctor-profile", "schedule", "reviews"] },
+        { "name": "Appointment", "route": "/appointment",  "sections": ["booking-form"] },
+        { "name": "Contact",     "route": "/contact",      "sections": ["contact-form", "locations"] }
+      ],
+      "navigation": [
+        { "label": "Services", "route": "/services" },
+        { "label": "Doctors", "route": "/doctors" },
+        { "label": "Appointment", "route": "/appointment" },
+        { "label": "Contact", "route": "/contact" }
+      ],
+      "design": {
+        "palette_hint": "soft-pastel",
+        "mood": ["caring", "calm", "trustworthy"],
+        "fonts": { "display": "Inter", "body": "Inter" },
+        "radius": "soft"
+      },
+      "image_subjects": ["doctor with patient", "modern clinic interior", "medical equipment soft focus", "smiling doctor portrait"],
+      "data_packs": ["clinic_services", "clinic_doctors"]
+    },
+    {
+      "key": "gaming-platform",
+      "label": "Gaming Platform",
+      "category": "media",
+      "kind": "website",
+      "match_keywords": ["gaming", "game studio", "esports", "steam style", "twitch"],
+      "pages": [
+        { "name": "Home",     "route": "/",          "sections": ["hero-video", "featured-games", "trending", "categories", "community-cta"] },
+        { "name": "Games",    "route": "/games",     "sections": ["filter-sidebar", "game-grid"] },
+        { "name": "Game",     "route": "/games/:id", "sections": ["game-hero", "media-gallery", "features", "reviews", "buy-widget"] },
+        { "name": "Community","route": "/community", "sections": ["forum-feed", "events"] },
+        { "name": "Login",    "route": "/login",     "sections": ["auth-form"] }
+      ],
+      "navigation": [
+        { "label": "Games", "route": "/games" },
+        { "label": "Community", "route": "/community" },
+        { "label": "Login", "route": "/login" }
+      ],
+      "design": {
+        "palette_hint": "neon-cyberpunk",
+        "mood": ["intense", "vibrant", "futuristic"],
+        "fonts": { "display": "Orbitron", "body": "Inter" },
+        "radius": "sharp"
+      },
+      "image_subjects": ["game cover art", "neon arcade", "esports stage lights", "controller close-up"],
+      "data_packs": ["games_catalog"]
+    },
+    {
+      "key": "news-magazine",
+      "label": "News / Magazine",
+      "category": "media",
+      "kind": "website",
+      "match_keywords": ["news", "magazine", "blog", "editorial", "publication", "journal"],
+      "pages": [
+        { "name": "Home",      "route": "/",           "sections": ["hero-story", "section-row-politics", "section-row-tech", "section-row-culture", "newsletter"] },
+        { "name": "Section",   "route": "/s/:slug",    "sections": ["section-header", "article-grid"] },
+        { "name": "Article",   "route": "/a/:slug",    "sections": ["article-header", "article-body", "related-articles"] },
+        { "name": "Authors",   "route": "/authors",    "sections": ["author-grid"] },
+        { "name": "About",     "route": "/about",      "sections": ["story", "team-grid"] }
+      ],
+      "navigation": [
+        { "label": "Politics", "route": "/s/politics" },
+        { "label": "Tech", "route": "/s/tech" },
+        { "label": "Culture", "route": "/s/culture" },
+        { "label": "About", "route": "/about" }
+      ],
+      "design": {
+        "palette_hint": "editorial-warm",
+        "mood": ["editorial", "authoritative", "readable"],
+        "fonts": { "display": "Playfair Display", "body": "Source Serif Pro" },
+        "radius": "sharp"
+      },
+      "image_subjects": ["editorial photo cover", "newsroom", "abstract editorial illustration"],
+      "data_packs": ["news_articles"]
+    },
+    {
+      "key": "social-media",
+      "label": "Social Media App",
+      "category": "communication",
+      "kind": "app",
+      "match_keywords": ["social media", "twitter clone", "instagram clone", "social feed", "social app"],
+      "pages": [
+        { "name": "Feed",     "route": "/",            "sections": ["sidebar-nav", "composer", "feed-list", "trending-panel"] },
+        { "name": "Profile",  "route": "/u/:handle",   "sections": ["sidebar-nav", "profile-header", "post-tabs", "feed-list"] },
+        { "name": "Post",     "route": "/post/:id",    "sections": ["sidebar-nav", "post-detail", "comments-thread"] },
+        { "name": "Explore",  "route": "/explore",     "sections": ["sidebar-nav", "search-bar", "discover-grid"] },
+        { "name": "Messages", "route": "/messages",    "sections": ["sidebar-nav", "dm-list", "message-pane", "composer"] }
+      ],
+      "navigation": [
+        { "label": "Feed", "route": "/" },
+        { "label": "Explore", "route": "/explore" },
+        { "label": "Messages", "route": "/messages" }
+      ],
+      "design": {
+        "palette_hint": "soft-modern",
+        "mood": ["lively", "personal", "fresh"],
+        "fonts": { "display": "Inter", "body": "Inter" },
+        "radius": "soft"
+      },
+      "image_subjects": ["abstract avatar pattern", "social media ui mockup", "lifestyle photo"],
+      "data_packs": ["social_users", "social_posts"]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "key": "open-lovable-saas",
+  "label": "SaaS Marketing",
+  "category": "saas",
+  "sub_niche": "b2b-saas",
+  "kind": "website",
+  "match_keywords": [
+    "saas",
+    "saas landing",
+    "saas marketing",
+    "b2b",
+    "platform website",
+    "product site",
+    "developer tool",
+    "developer platform",
+    "ai saas",
+    "saas product"
+  ],
+  "pages": [
+    {
+      "name": "Home",
+      "route": "/",
+      "sections": ["hero", "logo-cloud", "feature-spotlight", "pricing-band", "testimonials", "cta-band"],
+      "purpose": "Convert with a clear hero, social proof, and primary CTA."
+    },
+    {
+      "name": "Features",
+      "route": "/features",
+      "sections": ["feature-grid", "feature-spotlight", "comparison-table"],
+      "purpose": "Show the depth of the product across multiple capability cards."
+    },
+    {
+      "name": "Pricing",
+      "route": "/pricing",
+      "sections": ["pricing-table", "faq"],
+      "purpose": "Three-tier plan with monthly/yearly toggle and FAQ."
+    },
+    {
+      "name": "Docs",
+      "route": "/docs",
+      "sections": ["docs-index", "code-callouts"],
+      "purpose": "Browseable docs index with example callouts."
+    },
+    {
+      "name": "Changelog",
+      "route": "/changelog",
+      "sections": ["changelog-list"],
+      "purpose": "Dated entries of recent product updates."
+    }
+  ],
+  "navigation": [
+    { "label": "Home", "route": "/" },
+    { "label": "Features", "route": "/features" },
+    { "label": "Pricing", "route": "/pricing" },
+    { "label": "Docs", "route": "/docs" },
+    { "label": "Changelog", "route": "/changelog" }
+  ],
+  "design": {
+    "design_mode_hint": "premium_modern",
+    "palette_hint": "indigo + cyan on near-black, neutral cards",
+    "mood": ["modern", "confident", "premium", "developer-friendly"],
+    "fonts": { "display": "Inter", "body": "Inter", "mono": "JetBrains Mono" },
+    "radius": "soft"
+  },
+  "image_subjects": [
+    "abstract data visualization dark theme",
+    "isometric workflow diagram",
+    "team collaboration laptop screen modern office",
+    "code editor with syntax highlight",
+    "geometric gradient mesh hero background"
+  ],
+  "data_packs": ["saas_features"]
+}

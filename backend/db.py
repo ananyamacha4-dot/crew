@@ -115,6 +115,22 @@ def touch_project(project_id: str, entry: str | None = None) -> None:
             )
 
 
+def rename_project(project_id: str, name: str) -> bool:
+    with connect() as conn:
+        cur = conn.execute(
+            "UPDATE projects SET name = ?, updated_at = ? WHERE id = ?",
+            (name, time.time(), project_id),
+        )
+        return cur.rowcount > 0
+
+
+def delete_project(project_id: str) -> bool:
+    """Cascades to files + messages via FK ON DELETE CASCADE."""
+    with connect() as conn:
+        cur = conn.execute("DELETE FROM projects WHERE id = ?", (project_id,))
+        return cur.rowcount > 0
+
+
 # --- files -------------------------------------------------------------
 
 def list_files(project_id: str) -> list[dict]:

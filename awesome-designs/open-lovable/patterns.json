@@ -1,0 +1,78 @@
+{
+  "source": "open-lovable",
+  "source_repo": "https://github.com/firecrawl/open-lovable",
+  "note": "Patterns extracted from inspecting Open Lovable's stack and typical outputs. Aspirational items are listed but not imported by our scaffolder — we keep the minimal stack pinned in SandpackPreview.tsx.",
+  "stack": {
+    "in_use": [
+      "react@18.3",
+      "react-dom@18.3",
+      "react-router-dom@6.26",
+      "lucide-react",
+      "sonner",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "aspirational": [
+      "@radix-ui/* primitives",
+      "class-variance-authority",
+      "framer-motion",
+      "react-hook-form + zod",
+      "jotai"
+    ]
+  },
+  "component_vocabulary": {
+    "primitives": ["Button", "Dialog", "Tabs", "Accordion", "Tooltip", "DropdownMenu", "Sheet", "Select", "Switch", "Toast"],
+    "icons_library": "lucide-react",
+    "favored_icons": ["Sparkles", "Zap", "Check", "ArrowRight", "Star", "Code", "Rocket", "Quote", "Mail", "MapPin", "Clock", "Heart", "ShoppingBag", "ShoppingCart"]
+  },
+  "layout_principles": [
+    "container mx-auto max-w-6xl px-6",
+    "py-20 between sections on desktop, py-12 on mobile",
+    "sticky header with backdrop blur (bg-background/80)",
+    "mobile-first responsive grid: grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+    "always pair every <Link> with a <Route>",
+    "hero is centered and tall (min py-28)"
+  ],
+  "responsive_breakpoints": {
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px"
+  },
+  "motion_conventions": {
+    "page_enter": "fade + 8px translate, 500ms ease-out (Tailwind: animate-fade-up)",
+    "hover_lift": "transform translateY(-2px) + shadow-lg, 200ms",
+    "section_reveal": "scroll-into-view; we approximate with on-mount animate-fade-up",
+    "button_hover": "transition-opacity hover:opacity-90"
+  },
+  "archetype_layouts": {
+    "saas-marketing": [
+      "Home: hero -> logo-cloud -> feature-spotlight -> pricing-band -> testimonials -> cta-band",
+      "Features: feature-grid -> feature-spotlight -> comparison-table",
+      "Pricing: pricing-table -> faq",
+      "Docs: docs-index -> code-callouts",
+      "Changelog: changelog-list"
+    ],
+    "portfolio-personal": [
+      "Home: hero -> selected-work -> about-strip -> contact-cta",
+      "Work: project-grid",
+      "About: bio + skills",
+      "Journal: post-list",
+      "Contact: form + socials"
+    ],
+    "ecommerce-boutique": [
+      "Home: hero -> featured-collection -> brand-story -> press -> newsletter",
+      "Shop: filter-bar -> product-grid",
+      "Product: gallery -> details -> add-to-cart",
+      "Cart: line-items -> totals -> checkout-cta",
+      "Lookbook: image-grid",
+      "About: brand story"
+    ]
+  },
+  "content_principles": [
+    "Brand names should fit the niche (never 'platform', 'studio', 'app').",
+    "Use real-sounding people names in testimonials (e.g., 'Maya Patel, Lead Engineer at Stripe').",
+    "Pricing copy should be concrete ('Up to 50 projects', not 'Unlimited everything').",
+    "Empty section is better than lorem ipsum."
+  ]
+}

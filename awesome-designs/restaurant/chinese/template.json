@@ -1,0 +1,91 @@
+{
+  "key": "restaurant-chinese",
+  "label": "Chinese Restaurant",
+  "category": "restaurant",
+  "sub_niche": "chinese",
+  "kind": "website",
+  "match_keywords": [
+    "chinese restaurant",
+    "chinese",
+    "sichuan",
+    "szechuan",
+    "cantonese",
+    "hunan",
+    "shanghai",
+    "dim sum",
+    "hot pot",
+    "hotpot",
+    "wok",
+    "noodle",
+    "dumpling",
+    "kung pao",
+    "mapo",
+    "peking duck",
+    "lo mein",
+    "chow mein",
+    "wonton"
+  ],
+  "pages": [
+    {
+      "name": "Home",
+      "route": "/",
+      "sections": ["hero", "signature-dishes", "story-band", "gallery-strip", "reservation-cta"],
+      "purpose": "Set the mood and route guests to menu or reservations."
+    },
+    {
+      "name": "Menu",
+      "route": "/menu",
+      "sections": ["menu-categories", "menu-grid", "dietary-legend"],
+      "purpose": "Browse the full menu by category with prices and descriptions."
+    },
+    {
+      "name": "About",
+      "route": "/about",
+      "sections": ["heritage", "chef-spotlight", "values"],
+      "purpose": "Tell the story of the kitchen and the people behind it."
+    },
+    {
+      "name": "Gallery",
+      "route": "/gallery",
+      "sections": ["photo-grid"],
+      "purpose": "Showcase dishes, interior, and atmosphere."
+    },
+    {
+      "name": "Reservations",
+      "route": "/reservations",
+      "sections": ["reservation-form", "policy"],
+      "purpose": "Capture a reservation request with party size and time."
+    },
+    {
+      "name": "Contact",
+      "route": "/contact",
+      "sections": ["map-block", "hours", "contact-form"],
+      "purpose": "Address, hours, phone, and a message form."
+    }
+  ],
+  "navigation": [
+    { "label": "Home", "route": "/" },
+    { "label": "Menu", "route": "/menu" },
+    { "label": "About", "route": "/about" },
+    { "label": "Gallery", "route": "/gallery" },
+    { "label": "Reservations", "route": "/reservations" },
+    { "label": "Contact", "route": "/contact" }
+  ],
+  "design": {
+    "design_mode_hint": "warm_luxury_red",
+    "palette_hint": "deep red, antique gold, dark wood, ivory",
+    "mood": ["luxurious", "warm", "traditional-modern", "intimate", "appetizing"],
+    "fonts": { "display": "Playfair Display", "body": "Inter" },
+    "radius": "subtle"
+  },
+  "image_subjects": [
+    "chinese lanterns interior warm light",
+    "dim sum bamboo steamer top down",
+    "hand-pulled noodles wok flame",
+    "chinese tea ceremony porcelain",
+    "peking duck plating restaurant",
+    "sichuan mapo tofu close up",
+    "chinese restaurant dining room ambience"
+  ],
+  "data_packs": ["chinese_restaurant_menu"]
+}

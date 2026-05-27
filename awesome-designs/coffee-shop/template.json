@@ -1,0 +1,37 @@
+{
+  "key": "coffee-shop",
+  "label": "Coffee Shop",
+  "category": "hospitality",
+  "kind": "website",
+  "match_keywords": ["coffee", "cafe", "espresso", "barista", "roastery", "latte"],
+  "pages": [
+    { "name": "Home",     "route": "/",         "sections": ["hero", "featured-drinks", "story", "locations", "cta-band"] },
+    { "name": "Menu",     "route": "/menu",     "sections": ["menu-categories", "menu-grid"] },
+    { "name": "Shop",     "route": "/shop",     "sections": ["product-grid", "cart-drawer"] },
+    { "name": "About",    "route": "/about",    "sections": ["story", "team-grid", "values"] },
+    { "name": "Contact",  "route": "/contact",  "sections": ["contact-form", "locations", "hours"] },
+    { "name": "Cart",     "route": "/cart",     "sections": ["cart-table", "order-summary"] },
+    { "name": "Checkout", "route": "/checkout", "sections": ["checkout-form", "order-summary"] }
+  ],
+  "navigation": [
+    { "label": "Menu", "route": "/menu" },
+    { "label": "Shop", "route": "/shop" },
+    { "label": "About", "route": "/about" },
+    { "label": "Contact", "route": "/contact" }
+  ],
+  "design": {
+    "palette_hint": "warm-cream",
+    "mood": ["warm", "artisanal", "cozy"],
+    "fonts": { "display": "Fraunces", "body": "Inter" },
+    "radius": "soft"
+  },
+  "image_subjects": [
+    "latte art in ceramic cup",
+    "espresso machine close-up",
+    "coffee beans roasting",
+    "cozy cafe interior with warm lighting",
+    "barista pouring milk",
+    "pastries on wooden board"
+  ],
+  "data_packs": ["coffee_menu", "store_locations"]
+}

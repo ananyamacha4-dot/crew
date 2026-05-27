@@ -39,6 +39,24 @@ export async function generate(
   return res.json();
 }
 
+export type OptimizePromptResponse = {
+  optimized_prompt: string;
+  category: string | null;
+};
+
+export async function optimizePrompt(prompt: string): Promise<OptimizePromptResponse> {
+  const res = await fetch(`${BACKEND}/optimize-prompt`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt }),
+  });
+  if (!res.ok) {
+    const detail = await res.text();
+    throw new Error(detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
 export async function saveFile(
   projectId: string,
   path: string,

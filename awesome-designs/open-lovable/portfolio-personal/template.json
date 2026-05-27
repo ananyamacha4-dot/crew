@@ -1,0 +1,71 @@
+{
+  "key": "open-lovable-portfolio",
+  "label": "Personal Portfolio",
+  "category": "portfolio",
+  "sub_niche": "designer-portfolio",
+  "kind": "website",
+  "match_keywords": [
+    "portfolio",
+    "personal site",
+    "personal website",
+    "designer portfolio",
+    "developer portfolio",
+    "photographer portfolio",
+    "creative portfolio",
+    "freelancer site"
+  ],
+  "pages": [
+    {
+      "name": "Home",
+      "route": "/",
+      "sections": ["hero", "selected-work", "about-strip", "contact-cta"],
+      "purpose": "Big intro, curated selection of work, and a way to reach out."
+    },
+    {
+      "name": "Work",
+      "route": "/work",
+      "sections": ["project-grid"],
+      "purpose": "Complete portfolio grid with thumbnails, tags, and links."
+    },
+    {
+      "name": "About",
+      "route": "/about",
+      "sections": ["bio", "skills-chips", "timeline"],
+      "purpose": "Background, skills, and career arc."
+    },
+    {
+      "name": "Journal",
+      "route": "/journal",
+      "sections": ["post-list"],
+      "purpose": "Short essays, talks, and process notes."
+    },
+    {
+      "name": "Contact",
+      "route": "/contact",
+      "sections": ["contact-form", "social-links"],
+      "purpose": "Form + social handles. No fake addresses."
+    }
+  ],
+  "navigation": [
+    { "label": "Home", "route": "/" },
+    { "label": "Work", "route": "/work" },
+    { "label": "About", "route": "/about" },
+    { "label": "Journal", "route": "/journal" },
+    { "label": "Contact", "route": "/contact" }
+  ],
+  "design": {
+    "design_mode_hint": "warm_editorial",
+    "palette_hint": "off-white background, ink-black text, one accent",
+    "mood": ["editorial", "calm", "personal", "considered"],
+    "fonts": { "display": "Playfair Display", "body": "Inter" },
+    "radius": "sharp"
+  },
+  "image_subjects": [
+    "minimal still life desk workspace",
+    "creative portrait neutral background",
+    "abstract collage design work",
+    "studio interior natural light",
+    "magazine spread typography close up"
+  ],
+  "data_packs": ["portfolio_projects"]
+}

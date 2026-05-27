@@ -1,0 +1,50 @@
+{
+  "coffee shop": [
+    {
+      "name": "Warm Roast",
+      "colors": {
+        "primary": "#6F4E37",
+        "secondary": "#A67B5B",
+        "accent": "#7C9A6D",
+        "background": "#F5EBDD",
+        "text": "#2E1F14"
+      }
+    },
+    {
+      "name": "Forest Cafe",
+      "colors": {
+        "primary": "#5C4033",
+        "secondary": "#8B6F47",
+        "accent": "#6B8E23",
+        "background": "#EFE6DD",
+        "text": "#2A2118"
+      }
+    }
+  ],
+
+  "gaming": [
+    {
+      "name": "Neon Arena",
+      "colors": {
+        "primary": "#0D0D0D",
+        "secondary": "#1A1A2E",
+        "accent": "#A855F7",
+        "background": "#050505",
+        "text": "#FFFFFF"
+      }
+    }
+  ],
+
+  "fintech": [
+    {
+      "name": "Cyber Finance",
+      "colors": {
+        "primary": "#0F172A",
+        "secondary": "#1E293B",
+        "accent": "#38BDF8",
+        "background": "#020617",
+        "text": "#E2E8F0"
+      }
+    }
+  ]
+}

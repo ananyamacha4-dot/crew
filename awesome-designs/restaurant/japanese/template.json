@@ -1,0 +1,84 @@
+{
+  "key": "restaurant-japanese",
+  "label": "Japanese Restaurant",
+  "category": "restaurant",
+  "sub_niche": "japanese",
+  "kind": "website",
+  "match_keywords": [
+    "japanese restaurant",
+    "japanese",
+    "sushi",
+    "ramen",
+    "izakaya",
+    "tempura",
+    "sashimi",
+    "teppanyaki",
+    "yakitori",
+    "udon",
+    "soba",
+    "donburi",
+    "omakase"
+  ],
+  "pages": [
+    {
+      "name": "Home",
+      "route": "/",
+      "sections": ["hero", "signature-dishes", "story-band", "gallery-strip", "reservation-cta"],
+      "purpose": "Minimal, calm landing leading to menu or reservations."
+    },
+    {
+      "name": "Menu",
+      "route": "/menu",
+      "sections": ["menu-categories", "menu-grid", "dietary-legend"],
+      "purpose": "Sushi, ramen, izakaya plates, and seasonal selections."
+    },
+    {
+      "name": "About",
+      "route": "/about",
+      "sections": ["heritage", "chef-spotlight", "values"],
+      "purpose": "The chef, the philosophy, and the sourcing."
+    },
+    {
+      "name": "Gallery",
+      "route": "/gallery",
+      "sections": ["photo-grid"],
+      "purpose": "Plating, room, and bar."
+    },
+    {
+      "name": "Reservations",
+      "route": "/reservations",
+      "sections": ["reservation-form", "policy"],
+      "purpose": "Counter, table, or omakase request."
+    },
+    {
+      "name": "Contact",
+      "route": "/contact",
+      "sections": ["map-block", "hours", "contact-form"],
+      "purpose": "Find us, hours, and message form."
+    }
+  ],
+  "navigation": [
+    { "label": "Home", "route": "/" },
+    { "label": "Menu", "route": "/menu" },
+    { "label": "About", "route": "/about" },
+    { "label": "Gallery", "route": "/gallery" },
+    { "label": "Reservations", "route": "/reservations" },
+    { "label": "Contact", "route": "/contact" }
+  ],
+  "design": {
+    "design_mode_hint": "warm_editorial",
+    "palette_hint": "ink-on-paper, indigo blue, warm cream, charcoal",
+    "mood": ["minimal", "calm", "intentional", "premium"],
+    "fonts": { "display": "Playfair Display", "body": "Inter" },
+    "radius": "sharp"
+  },
+  "image_subjects": [
+    "sushi platter top down minimal",
+    "ramen bowl steam dark wood",
+    "izakaya warm interior lanterns",
+    "tempura plating ceramic dish",
+    "japanese tea cup pour",
+    "sashimi arrangement ice"
+  ],
+  "data_packs": ["japanese_restaurant_menu"]
+}

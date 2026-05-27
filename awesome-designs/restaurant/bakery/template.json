@@ -1,0 +1,71 @@
+{
+  "key": "restaurant-bakery",
+  "label": "Artisan Bakery",
+  "category": "restaurant",
+  "sub_niche": "bakery",
+  "kind": "website",
+  "match_keywords": [
+    "bakery",
+    "patisserie",
+    "boulangerie",
+    "bakeshop",
+    "pastry shop",
+    "bread shop",
+    "sourdough bakery"
+  ],
+  "pages": [
+    {
+      "name": "Home",
+      "route": "/",
+      "sections": ["hero", "signature-dishes", "story-band", "gallery-strip", "reservation-cta"],
+      "purpose": "Today's bake, hours, and ordering."
+    },
+    {
+      "name": "Menu",
+      "route": "/menu",
+      "sections": ["menu-categories", "menu-grid", "dietary-legend"],
+      "purpose": "Breads, pastries, cakes, and seasonal items."
+    },
+    {
+      "name": "About",
+      "route": "/about",
+      "sections": ["heritage", "chef-spotlight", "values"],
+      "purpose": "Bakers, flour, and the long-ferment method."
+    },
+    {
+      "name": "Gallery",
+      "route": "/gallery",
+      "sections": ["photo-grid"],
+      "purpose": "Inside the bakery — proofing, ovens, finished loaves."
+    },
+    {
+      "name": "Contact",
+      "route": "/contact",
+      "sections": ["map-block", "hours", "contact-form"],
+      "purpose": "Where to find us and how to pre-order."
+    }
+  ],
+  "navigation": [
+    { "label": "Home", "route": "/" },
+    { "label": "Menu", "route": "/menu" },
+    { "label": "About", "route": "/about" },
+    { "label": "Gallery", "route": "/gallery" },
+    { "label": "Contact", "route": "/contact" }
+  ],
+  "design": {
+    "design_mode_hint": "warm_editorial",
+    "palette_hint": "cream, ink black, deep brown, gold",
+    "mood": ["warm", "artisanal", "honest", "crafted"],
+    "fonts": { "display": "Playfair Display", "body": "Inter" },
+    "radius": "subtle"
+  },
+  "image_subjects": [
+    "sourdough loaf scored crust",
+    "croissant lamination close up",
+    "bakery counter pastries display",
+    "rye bread on wooden board",
+    "baker hands shaping dough",
+    "rustic patisserie window morning"
+  ],
+  "data_packs": ["bakery_menu"]
+}

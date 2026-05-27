@@ -11,9 +11,21 @@ Output: 10 files that ALWAYS render in Sandpack.
 from __future__ import annotations
 
 import json
+import os
+from typing import TYPE_CHECKING
 
 from .archetypes import get_archetype
+from .design_modes import get_design_mode
 from .schemas import ContentPack, DesignSystem, FileSet, GeneratedFile, ProductBrief
+
+if TYPE_CHECKING:
+    from services.brand_library import Brand
+
+
+# Module-level brand override, set by scaffold_project() before rendering, so
+# the existing palette accessor (`get_archetype(...)["palette"]`) used inside
+# _index_css picks up the brand colors without changing every helper signature.
+_active_brand: "Brand | None" = None
 
 
 # ---------------------------------------------------------------------------
@@ -24,22 +36,48 @@ def scaffold_project(
     brief: ProductBrief,
     design: DesignSystem,
     content: ContentPack,
+    brand: "Brand | None" = None,
 ) -> FileSet:
-    files: list[GeneratedFile] = [
-        GeneratedFile(path="package.json", content=_package_json(content)),
-        GeneratedFile(path="tsconfig.json", content=_tsconfig()),
-        GeneratedFile(path="public/index.html", content=_index_html(content, design)),
-        GeneratedFile(path="src/index.tsx", content=_index_tsx()),
-        GeneratedFile(path="src/styles.css", content=_index_css(design)),
-        GeneratedFile(path="src/lib/utils.ts", content=_utils_ts()),
-        GeneratedFile(path="src/App.tsx", content=_app_tsx(brief, design, content)),
-    ]
+    global _active_brand
+    _active_brand = brand
+    try:
+        files: list[GeneratedFile] = [
+            GeneratedFile(path="package.json", content=_package_json(content)),
+            GeneratedFile(path="tsconfig.json", content=_tsconfig()),
+            GeneratedFile(path="public/index.html", content=_index_html(content, design)),
+            GeneratedFile(path="src/index.tsx", content=_index_tsx()),
+            GeneratedFile(path="src/styles.css", content=_index_css(design)),
+            GeneratedFile(path="src/lib/utils.ts", content=_utils_ts()),
+            GeneratedFile(path="src/App.tsx", content=_app_tsx(brief, design, content)),
+        ]
+    finally:
+        _active_brand = None
+
+    brand_suffix = f" · {brand.name} palette" if brand else ""
     summary = (
-        f"{content.brand_name}: {brief.product_type} · {design.archetype} · "
-        f"{len(content.features)} features, {len(content.testimonials)} testimonials, "
-        f"{len(content.pricing_tiers)} pricing tiers"
-    )
+   f"{content.brand_name}: {brief.product_type}"
+)
     return FileSet(files=files, entry="public/index.html", summary=summary)
+
+
+def _palette_for(design: DesignSystem) -> dict:
+    """Return the palette dict the CSS layer should use.
+
+    Starts from the archetype's defaults, then overrides primary/accent/
+    background/neutral_base with the active brand's colors when set.
+    """
+    arche = get_archetype(design.archetype)
+    palette = dict(arche.get("palette", {}))
+    if _active_brand is not None:
+        palette["primary"]      = _active_brand.primary_hex()
+        palette["accent"]       = _active_brand.accent_hex()
+        bg = _active_brand.background_hex()
+        if bg:
+            palette["background"] = bg
+        fg = _active_brand.foreground_hex()
+        if fg:
+            palette["neutral_base"] = fg
+    return palette
 
 
 # ---------------------------------------------------------------------------
@@ -167,60 +205,117 @@ export function cn(...inputs: ClassValue[]) {
 # ---------------------------------------------------------------------------
 
 def _index_css(design: DesignSystem) -> str:
-    arche = get_archetype(design.archetype)
-    palette = arche.get("palette", {})
-    fonts = design.fonts or arche.get("fonts", {})
-    radius_token = design.radius or "subtle"
-    radius_value = {
-        "sharp": "0px",
-        "subtle": "0.5rem",
-        "soft": "0.75rem",
-        "pill": "9999px",
-    }.get(radius_token, "0.5rem")
+    """Emit CSS variables from the design_mode (DESIGN_MODES catalog).
 
-    primary_hsl = _hex_to_hsl(palette.get("primary", "#5e6ad2"))
-    accent_hsl = _hex_to_hsl(palette.get("accent", "#94a3b8"))
-    bg_hex = palette.get("background", "#fafafa")
-    fg_hex = palette.get("neutral_base", "#0a0a0a")
-    is_dark = _is_dark_color(bg_hex)
-    bg_hsl = _hex_to_hsl(bg_hex)
-    fg_hsl = _hex_to_hsl(fg_hex)
-    primary_fg_hsl = _hex_to_hsl("#ffffff" if _is_dark_color(palette.get("primary", "#5e6ad2")) else "#000000")
-    accent_fg_hsl = _hex_to_hsl("#ffffff" if _is_dark_color(palette.get("accent", "#94a3b8")) else "#0a0a0a")
-    muted_hsl = "0 0% 96%" if not is_dark else "240 4% 13%"
-    muted_fg_hsl = "240 4% 46%" if not is_dark else "240 5% 65%"
-    border_hsl = "240 6% 90%" if not is_dark else "240 4% 18%"
-    card_hsl = bg_hsl
+    The chosen design_mode is the source of truth for the palette, fonts,
+    radius, shadows, and gradient. The archetype only contributes signature
+    moves to the engineer prompt — it no longer touches CSS.
+    """
+    mode = get_design_mode(design.design_mode)
+    p = mode["palette"]
+    fonts = mode.get("fonts") or design.fonts or {}
+    radius = mode.get("radius", "0.5rem")
+    shadow_style = mode.get("shadow_style", "soft-layered")
+    gradient_primary = mode.get("gradient_primary", "")
+
+    shadow_presets = {
+        "flat": {
+            "sm": "0 1px 0 hsl(var(--border))",
+            "md": "0 1px 2px hsl(var(--border))",
+            "lg": "0 2px 4px hsl(var(--border))",
+            "glow": "0 0 0 0 transparent",
+        },
+        "subtle-paper": {
+            "sm": "0 1px 2px rgba(0,0,0,0.04)",
+            "md": "0 4px 12px rgba(0,0,0,0.06)",
+            "lg": "0 10px 30px rgba(0,0,0,0.08)",
+            "glow": "0 0 0 0 transparent",
+        },
+        "soft-layered": {
+            "sm": "0 1px 2px rgba(0,0,0,0.06), 0 1px 1px rgba(0,0,0,0.04)",
+            "md": "0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04)",
+            "lg": "0 24px 48px -12px rgba(0,0,0,0.18), 0 8px 16px -8px rgba(0,0,0,0.10)",
+            "glow": "0 0 32px -8px hsl(var(--primary) / 0.45)",
+        },
+        "neon-glow": {
+            "sm": "0 0 12px -2px hsl(var(--primary) / 0.4)",
+            "md": "0 0 24px -4px hsl(var(--primary) / 0.55), 0 0 60px -16px hsl(var(--accent) / 0.45)",
+            "lg": "0 0 48px -8px hsl(var(--primary) / 0.7), 0 0 100px -20px hsl(var(--accent) / 0.55)",
+            "glow": "0 0 32px hsl(var(--primary) / 0.6), 0 0 64px hsl(var(--accent) / 0.35)",
+        },
+    }
+    sh = shadow_presets.get(shadow_style, shadow_presets["soft-layered"])
 
     display_font = fonts.get("display", "Inter, system-ui, sans-serif")
-    body_font = fonts.get("body", "Inter, system-ui, sans-serif")
-    mono_font = fonts.get("mono", "JetBrains Mono, ui-monospace, monospace")
+    body_font    = fonts.get("body",    "Inter, system-ui, sans-serif")
+    mono_font    = fonts.get("mono",    "JetBrains Mono, ui-monospace, monospace")
 
-    # Tailwind directives are NOT needed: we load Tailwind via Play CDN in
-    # index.html. We just ship the CSS custom properties + base body styles.
     return (
+        "/* ---------- DESIGN TOKENS ---------- */\n"
+        f"/* design_mode: {design.design_mode} ({mode.get('label','')}) */\n"
         ":root {\n"
-        f"  --background: {bg_hsl};\n"
-        f"  --foreground: {fg_hsl};\n"
-        f"  --muted: {muted_hsl};\n"
-        f"  --muted-foreground: {muted_fg_hsl};\n"
-        f"  --primary: {primary_hsl};\n"
-        f"  --primary-foreground: {primary_fg_hsl};\n"
-        f"  --accent: {accent_hsl};\n"
-        f"  --accent-foreground: {accent_fg_hsl};\n"
-        f"  --border: {border_hsl};\n"
-        f"  --card: {card_hsl};\n"
-        f"  --radius: {radius_value};\n"
+        f"  --background: {p['background']};\n"
+        f"  --foreground: {p['foreground']};\n"
+        f"  --muted: {p['muted']};\n"
+        f"  --muted-foreground: {p['muted_foreground']};\n"
+        f"  --card: {p['card']};\n"
+        f"  --border: {p['border']};\n"
+        f"  --primary: {p['primary']};\n"
+        f"  --primary-foreground: {p['primary_foreground']};\n"
+        f"  --accent: {p['accent']};\n"
+        f"  --accent-foreground: {p['accent_foreground']};\n"
+        f"  --radius: {radius};\n"
         f"  --font-display: {display_font};\n"
         f"  --font-body: {body_font};\n"
         f"  --font-mono: {mono_font};\n"
+        f"  --shadow-sm: {sh['sm']};\n"
+        f"  --shadow-md: {sh['md']};\n"
+        f"  --shadow-lg: {sh['lg']};\n"
+        f"  --shadow-glow: {sh['glow']};\n"
+        f"  --gradient-primary: {gradient_primary};\n"
         "}\n\n"
-        "html { scroll-behavior: smooth; }\n\n"
+        "html { scroll-behavior: smooth; }\n"
         "body {\n"
         "  font-family: var(--font-body);\n"
+        "  background: hsl(var(--background));\n"
+        "  color: hsl(var(--foreground));\n"
         "  -webkit-font-smoothing: antialiased;\n"
         "  -moz-osx-font-smoothing: grayscale;\n"
         "}\n"
+        "h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }\n"
+        "code, pre { font-family: var(--font-mono); }\n\n"
+        "/* ---------- PREMIUM UTILITY CLASSES ---------- */\n"
+        ".gradient-text {\n"
+        "  background-image: var(--gradient-primary);\n"
+        "  -webkit-background-clip: text;\n"
+        "  background-clip: text;\n"
+        "  color: transparent;\n"
+        "}\n"
+        ".gradient-bg { background-image: var(--gradient-primary); }\n"
+        ".glass {\n"
+        "  background: hsl(var(--card) / 0.6);\n"
+        "  backdrop-filter: blur(16px) saturate(180%);\n"
+        "  -webkit-backdrop-filter: blur(16px) saturate(180%);\n"
+        "  border: 1px solid hsl(var(--border) / 0.5);\n"
+        "}\n"
+        ".shadow-soft  { box-shadow: var(--shadow-md); }\n"
+        ".shadow-lifted{ box-shadow: var(--shadow-lg); }\n"
+        ".glow         { box-shadow: var(--shadow-glow); }\n"
+        ".hover-lift { transition: transform 200ms ease, box-shadow 200ms ease; }\n"
+        ".hover-lift:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }\n"
+        ".surface-1 { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); }\n"
+        ".surface-2 { background: hsl(var(--muted)); border: 1px solid hsl(var(--border)); }\n"
+        "::-webkit-scrollbar { width: 10px; height: 10px; }\n"
+        "::-webkit-scrollbar-track { background: hsl(var(--background)); }\n"
+        "::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 999px;"
+        " border: 2px solid hsl(var(--background)); }\n"
+        "*:focus-visible { outline: 2px solid hsl(var(--primary) / 0.6); outline-offset: 2px;"
+        " border-radius: var(--radius); }\n"
+        "@keyframes fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }\n"
+        ".animate-fade-up   { animation: fade-up 500ms ease both; }\n"
+        ".animate-fade-up-1 { animation: fade-up 500ms 80ms ease both; }\n"
+        ".animate-fade-up-2 { animation: fade-up 500ms 160ms ease both; }\n"
+        ".animate-fade-up-3 { animation: fade-up 500ms 240ms ease both; }\n"
     )
 
 
@@ -281,6 +376,8 @@ const PRICING: { name: string; price: string; period: string; description: strin
 const FAQS: { question: string; answer: string }[] = __FAQS__;
 const FOOTER_LINKS: Record<string, { label: string; route: string }[]> = __FOOTER_LINKS__;
 const SECTIONS_ENABLED: Record<string, boolean> = __SECTIONS_ENABLED__;
+const HERO_IMAGE: string = __HERO_IMAGE__;
+const FEATURE_IMAGES: string[] = __FEATURE_IMAGES__;
 
 function Icon({ name, className }: { name: string; className?: string }) {
   const Cmp = ICON_MAP[name] || Sparkles;
@@ -364,33 +461,51 @@ function Header() {
 
 function Hero() {
   return (
-    <section id="hero" className="container mx-auto max-w-6xl px-6 py-24 text-center md:py-32">
-      {TAGLINE && <p className="mb-4 text-sm font-medium uppercase tracking-widest text-muted-foreground">{TAGLINE}</p>}
-      <h1 className="mx-auto max-w-3xl font-display text-4xl font-bold leading-tight tracking-tight md:text-6xl">
-        {HEADLINE}
-      </h1>
-      <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-        {SUBHEAD}
-      </p>
-      <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-        <button
-          onClick={() => {
-            const id = FEATURES.length ? 'features' : (PRICING.length ? 'pricing' : 'cta');
-            scrollToId(id);
-          }}
-          className="inline-flex items-center gap-2 rounded-[var(--radius)] bg-primary px-6 py-3 text-base font-medium text-primary-foreground transition-opacity hover:opacity-90"
-        >
-          {PRIMARY_CTA}
-          <Icon name="ArrowRight" className="h-4 w-4" />
-        </button>
-        {SECONDARY_CTA && (
-          <button
-            onClick={() => scrollToId('faq')}
-            className="inline-flex items-center gap-2 rounded-[var(--radius)] border border-border px-6 py-3 text-base font-medium transition-colors hover:bg-muted"
-          >
-            {SECONDARY_CTA}
-          </button>
+    <section id="hero" className="relative overflow-hidden">
+      {HERO_IMAGE && (
+        <img
+          src={HERO_IMAGE}
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25"
+          loading="eager"
+        />
+      )}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{ background: 'radial-gradient(60% 50% at 50% 0%, hsl(var(--primary) / 0.18), transparent 70%)' }}
+      />
+      <div className="relative container mx-auto max-w-6xl px-6 py-28 text-center md:py-36">
+        {TAGLINE && (
+          <p className="mb-4 animate-fade-up text-sm font-medium uppercase tracking-widest text-muted-foreground">{TAGLINE}</p>
         )}
+        <h1 className="mx-auto max-w-3xl animate-fade-up-1 font-display text-4xl font-bold leading-tight tracking-tight md:text-6xl">
+          {HEADLINE}
+        </h1>
+        <p className="mx-auto mt-6 max-w-2xl animate-fade-up-2 text-lg text-muted-foreground">
+          {SUBHEAD}
+        </p>
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3 animate-fade-up-3">
+          <button
+            onClick={() => {
+              const id = FEATURES.length ? 'features' : (PRICING.length ? 'pricing' : 'cta');
+              scrollToId(id);
+            }}
+            className="inline-flex items-center gap-2 rounded-[var(--radius)] bg-primary px-6 py-3 text-base font-medium text-primary-foreground shadow-soft transition-all hover:opacity-90 hover:shadow-lifted"
+          >
+            {PRIMARY_CTA}
+            <Icon name="ArrowRight" className="h-4 w-4" />
+          </button>
+          {SECONDARY_CTA && (
+            <button
+              onClick={() => scrollToId('faq')}
+              className="inline-flex items-center gap-2 rounded-[var(--radius)] border border-border bg-card/60 px-6 py-3 text-base font-medium backdrop-blur transition-colors hover:bg-muted"
+            >
+              {SECONDARY_CTA}
+            </button>
+          )}
+        </div>
       </div>
     </section>
   );
@@ -406,12 +521,25 @@ function FeatureGrid() {
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((f, i) => (
-          <div key={i} className="rounded-[var(--radius)] border border-border bg-card p-6 transition-colors hover:border-primary">
-            <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-primary/10 text-primary">
-              <Icon name={f.icon} className="h-5 w-5" />
+          <div
+            key={i}
+            className="hover-lift overflow-hidden rounded-[var(--radius)] border border-border bg-card transition-colors hover:border-primary"
+          >
+            {FEATURE_IMAGES[i] && (
+              <img
+                src={FEATURE_IMAGES[i]}
+                alt={f.title}
+                loading="lazy"
+                className="h-40 w-full object-cover opacity-80 transition-opacity hover:opacity-100"
+              />
+            )}
+            <div className="p-6">
+              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-primary/10 text-primary">
+                <Icon name={f.icon} className="h-5 w-5" />
+              </div>
+              <h3 className="mb-2 font-display text-lg font-semibold">{f.title}</h3>
+              <p className="text-sm text-muted-foreground">{f.description}</p>
             </div>
-            <h3 className="mb-2 font-display text-lg font-semibold">{f.title}</h3>
-            <p className="text-sm text-muted-foreground">{f.description}</p>
           </div>
         ))}
       </div>
@@ -429,7 +557,7 @@ function Testimonials() {
         </h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {TESTIMONIALS.map((t, i) => (
-            <figure key={i} className="rounded-[var(--radius)] border border-border bg-card p-6">
+            <figure key={i} className="hover-lift rounded-[var(--radius)] border border-border bg-card p-6 transition-colors hover:border-primary">
               <Icon name="Quote" className="mb-4 h-5 w-5 text-muted-foreground" />
               <blockquote className="text-sm leading-relaxed">&ldquo;{t.quote}&rdquo;</blockquote>
               <figcaption className="mt-4 border-t border-border pt-4">
@@ -457,8 +585,8 @@ function Pricing() {
           <div
             key={i}
             className={cn(
-              'rounded-[var(--radius)] border bg-card p-8',
-              p.highlighted ? 'border-primary shadow-lg ring-1 ring-primary' : 'border-border'
+              'hover-lift rounded-[var(--radius)] border bg-card p-8 transition-all',
+              p.highlighted ? 'border-primary shadow-lg ring-1 ring-primary' : 'border-border hover:border-primary'
             )}
           >
             {p.highlighted && (
@@ -508,7 +636,7 @@ function Faq() {
       </h2>
       <div className="space-y-3">
         {FAQS.map((f, i) => (
-          <div key={i} className="rounded-[var(--radius)] border border-border bg-card">
+          <div key={i} className="rounded-[var(--radius)] border border-border bg-card transition-colors hover:border-primary">
             <button
               onClick={() => setOpenIdx((cur) => (cur === i ? null : i))}
               className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-medium hover:bg-muted/40"
@@ -628,6 +756,11 @@ def _app_tsx(
     faqs = content.faqs or []
     footer_links = content.footer_links or {}
 
+    # Pre-build Pollinations URLs so the rendered page always has imagery.
+    # Failures are non-fatal — empty strings render as no image (the template
+    # guards every <img> with a truthy check).
+    hero_image_url, feature_image_urls = _build_landing_images(brief, content)
+
     substitutions = {
         "__BRAND__": json.dumps(content.brand_name or "Brand"),
         "__TAGLINE__": json.dumps(content.tagline or ""),
@@ -674,12 +807,83 @@ def _app_tsx(
             ensure_ascii=False,
         ),
         "__SECTIONS_ENABLED__": json.dumps(sections_enabled),
+        "__HERO_IMAGE__": json.dumps(hero_image_url, ensure_ascii=False),
+        "__FEATURE_IMAGES__": json.dumps(feature_image_urls, ensure_ascii=False),
     }
 
     out = _APP_TSX_TEMPLATE
     for token, value in substitutions.items():
         out = out.replace(token, value)
     return out
+
+
+def _build_landing_images(
+    brief: ProductBrief,
+    content: ContentPack,
+) -> tuple[str, list[str]]:
+    """Build a hero image URL + one image URL per feature.
+
+    Returns ('', []) if image generation fails for any reason — the App.tsx
+    template guards every <img> with a truthy check so missing URLs render as
+    no image (still styled, just text-only).
+
+    Fetches in parallel via a ThreadPoolExecutor so the hero and all feature
+    images come back together rather than blocking sequentially.
+    """
+    try:
+        from services.image_gen import generate_image_url, generate_hero_image_url
+    except Exception:  # noqa: BLE001
+        return "", []
+
+    # Hero and feature images are independent — fan out across a small pool.
+    feature_specs: list[tuple[int, str, int]] = []
+    for idx, f in enumerate(content.features or []):
+        subject = (f.title or "").strip()
+        if not subject:
+            continue
+        # Stable seed per feature title so reruns don't thrash Sandpack.
+        seed = abs(hash(subject)) % 9_000_000 + 1
+        prompt = f"{subject}, editorial illustration, soft gradient, no text, no watermark"
+        feature_specs.append((idx, prompt, seed))
+
+    try:
+        workers = max(1, int(os.getenv("POLLINATIONS_FETCH_WORKERS", "8")))
+    except (TypeError, ValueError):
+        workers = 8
+
+    from concurrent.futures import ThreadPoolExecutor
+
+    def _hero() -> str:
+        try:
+            return generate_hero_image_url(brief, brand=_active_brand)
+        except Exception:  # noqa: BLE001
+            return ""
+
+    def _feature(spec: tuple[int, str, int]) -> tuple[int, str]:
+        idx, prompt, seed = spec
+        try:
+            return idx, generate_image_url(prompt, width=960, height=540, seed=seed)
+        except Exception:  # noqa: BLE001
+            return idx, ""
+
+    hero_url = ""
+    feature_results: list[tuple[int, str]] = []
+    with ThreadPoolExecutor(max_workers=max(workers, 1)) as pool:
+        hero_future = pool.submit(_hero)
+        if feature_specs:
+            feature_results = list(pool.map(_feature, feature_specs))
+        try:
+            hero_url = hero_future.result()
+        except Exception:  # noqa: BLE001
+            hero_url = ""
+
+    # Re-index features back to the original order, padding any skipped slots.
+    feature_urls: list[str] = ["" for _ in (content.features or [])]
+    for idx, url in feature_results:
+        if 0 <= idx < len(feature_urls):
+            feature_urls[idx] = url
+
+    return hero_url, feature_urls
 
 
 # ---------------------------------------------------------------------------

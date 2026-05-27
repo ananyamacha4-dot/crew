@@ -23,3 +23,8 @@ json-repair>=0.25
 # reports JS errors. After installing this package you must also run:
 #   python -m playwright install chromium
 playwright>=1.45
+
+# Imagen 3 / Gemini image generation. Used by services/gemini_image_service.py
+# as an additive provider in services/image_gen.py — Pollinations remains the
+# fallback when GEMINI_API_KEY is unset or Imagen calls fail.
+google-genai>=0.3.0

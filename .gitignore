@@ -15,3 +15,7 @@ venv/
 .venv/
 __pycache__/
 node_modules/
+
+# Imagen / Gemini cached PNGs — keep the directory via .gitkeep, ignore binaries
+backend/storage/generated_assets/*.png
+backend/storage/generated_assets/*.tmp

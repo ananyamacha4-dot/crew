@@ -1,0 +1,37 @@
+{
+  "key": "restaurant",
+  "label": "Restaurant",
+  "category": "hospitality",
+  "kind": "website",
+  "match_keywords": ["restaurant", "bistro", "diner", "eatery", "fine dining", "trattoria"],
+  "pages": [
+    { "name": "Home",         "route": "/",             "sections": ["hero", "featured-dishes", "story", "reservation-cta"] },
+    { "name": "Menu",         "route": "/menu",         "sections": ["menu-categories", "menu-grid"] },
+    { "name": "Reservations", "route": "/reservations", "sections": ["booking-form", "hours"] },
+    { "name": "About",        "route": "/about",        "sections": ["story", "chef-bio", "team-grid"] },
+    { "name": "Gallery",      "route": "/gallery",      "sections": ["gallery-grid"] },
+    { "name": "Contact",      "route": "/contact",      "sections": ["contact-form", "locations", "hours"] }
+  ],
+  "navigation": [
+    { "label": "Menu", "route": "/menu" },
+    { "label": "Reservations", "route": "/reservations" },
+    { "label": "About", "route": "/about" },
+    { "label": "Gallery", "route": "/gallery" },
+    { "label": "Contact", "route": "/contact" }
+  ],
+  "design": {
+    "palette_hint": "editorial-warm",
+    "mood": ["elegant", "appetizing", "refined"],
+    "fonts": { "display": "Playfair Display", "body": "Inter" },
+    "radius": "subtle"
+  },
+  "image_subjects": [
+    "plated gourmet dish",
+    "chef cooking in kitchen",
+    "restaurant ambience candlelit",
+    "wine glasses on table",
+    "dessert plating",
+    "fresh ingredients"
+  ],
+  "data_packs": ["restaurant_menu", "reservation_slots"]
+}

@@ -1,0 +1,87 @@
+{
+  "key": "open-lovable-healthcare",
+  "label": "Healthcare Clinic",
+  "category": "healthcare",
+  "sub_niche": "clinic",
+  "kind": "website",
+  "match_keywords": [
+    "hospital",
+    "clinic",
+    "doctor",
+    "dental",
+    "dentist",
+    "medical",
+    "medical practice",
+    "medical clinic",
+    "healthcare",
+    "wellness",
+    "wellness clinic",
+    "practice",
+    "physiotherapy",
+    "chiropractor",
+    "telehealth",
+    "urgent care"
+  ],
+  "pages": [
+    {
+      "name": "Home",
+      "route": "/",
+      "sections": ["hero", "services-strip", "doctors-strip", "testimonials", "booking-cta"],
+      "purpose": "Reassuring first impression that routes to booking or services."
+    },
+    {
+      "name": "Services",
+      "route": "/services",
+      "sections": ["services-grid"],
+      "purpose": "Every service line with a clear description."
+    },
+    {
+      "name": "Doctors",
+      "route": "/doctors",
+      "sections": ["doctors-grid"],
+      "purpose": "Care team with photos, credentials, and short bios."
+    },
+    {
+      "name": "Booking",
+      "route": "/booking",
+      "sections": ["booking-form", "policy"],
+      "purpose": "Request an appointment with a doctor of choice."
+    },
+    {
+      "name": "About",
+      "route": "/about",
+      "sections": ["mission", "values"],
+      "purpose": "Who we are and what we stand for."
+    },
+    {
+      "name": "Contact",
+      "route": "/contact",
+      "sections": ["map-block", "hours", "contact-form"],
+      "purpose": "Address, hours, phone, and a contact form."
+    }
+  ],
+  "navigation": [
+    { "label": "Home", "route": "/" },
+    { "label": "Services", "route": "/services" },
+    { "label": "Doctors", "route": "/doctors" },
+    { "label": "Booking", "route": "/booking" },
+    { "label": "About", "route": "/about" },
+    { "label": "Contact", "route": "/contact" }
+  ],
+  "design": {
+    "design_mode_hint": "lovable_bright",
+    "palette_hint": "soft white, indigo primary, sky/mint accents, generous rounded cards",
+    "mood": ["calm", "trustworthy", "modern", "approachable"],
+    "fonts": { "display": "Inter", "body": "Inter" },
+    "radius": "soft"
+  },
+  "image_subjects": [
+    "modern hospital lobby natural light minimal",
+    "smiling doctor portrait clinic neutral background",
+    "patient consultation friendly modern clinic",
+    "medical professional team diverse",
+    "wellness clinic interior soft lighting",
+    "stethoscope on wooden desk minimal"
+  ],
+  "data_packs": ["healthcare_services"]
+}

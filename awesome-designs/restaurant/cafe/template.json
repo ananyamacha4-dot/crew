@@ -1,0 +1,70 @@
+{
+  "key": "restaurant-cafe",
+  "label": "Neighborhood Café",
+  "category": "restaurant",
+  "sub_niche": "cafe",
+  "kind": "website",
+  "match_keywords": [
+    "café",
+    "cafe",
+    "neighborhood cafe",
+    "all day cafe",
+    "brunch cafe",
+    "breakfast cafe"
+  ],
+  "pages": [
+    {
+      "name": "Home",
+      "route": "/",
+      "sections": ["hero", "signature-dishes", "story-band", "gallery-strip", "reservation-cta"],
+      "purpose": "Cozy first impression, hours, and what we serve."
+    },
+    {
+      "name": "Menu",
+      "route": "/menu",
+      "sections": ["menu-categories", "menu-grid", "dietary-legend"],
+      "purpose": "All-day menu — coffee, brunch, pastries, light bites."
+    },
+    {
+      "name": "About",
+      "route": "/about",
+      "sections": ["heritage", "chef-spotlight", "values"],
+      "purpose": "Owners, sourcing, and the room."
+    },
+    {
+      "name": "Gallery",
+      "route": "/gallery",
+      "sections": ["photo-grid"],
+      "purpose": "Latte art, plates, neighborhood."
+    },
+    {
+      "name": "Contact",
+      "route": "/contact",
+      "sections": ["map-block", "hours", "contact-form"],
+      "purpose": "Visit us — address, hours, contact form."
+    }
+  ],
+  "navigation": [
+    { "label": "Home", "route": "/" },
+    { "label": "Menu", "route": "/menu" },
+    { "label": "About", "route": "/about" },
+    { "label": "Gallery", "route": "/gallery" },
+    { "label": "Contact", "route": "/contact" }
+  ],
+  "design": {
+    "design_mode_hint": "warm_editorial",
+    "palette_hint": "cream, ink black, terracotta, warm amber",
+    "mood": ["warm", "artisanal", "welcoming", "neighborhood"],
+    "fonts": { "display": "Fraunces", "body": "Inter" },
+    "radius": "soft"
+  },
+  "image_subjects": [
+    "latte art ceramic cup neighborhood cafe",
+    "brunch plate sourdough toast egg",
+    "cafe interior natural light warm",
+    "pastries on wooden board",
+    "espresso machine pour shot",
+    "barista smiling counter"
+  ],
+  "data_packs": ["coffee_menu"]
+}

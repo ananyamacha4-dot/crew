@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-import type { AgentStep, PaletteColor } from "../lib/api";
+import { optimizePrompt, type AgentStep, type PaletteColor } from "../lib/api";
 
 export type Message = {
   role: "user" | "assistant" | "system";
@@ -36,10 +37,34 @@ const EXAMPLES = [
 
 export function Chat({ messages, loading, input, onInput, onSend, hasProject, onPickExample, onPickSuggestion }: Props) {
   const endRef = useRef<HTMLDivElement>(null);
+  const [optimizing, setOptimizing] = useState(false);
+  const [optimizeError, setOptimizeError] = useState<string | null>(null);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
+
+  useEffect(() => {
+    if (!optimizeError) return;
+    const t = setTimeout(() => setOptimizeError(null), 4000);
+    return () => clearTimeout(t);
+  }, [optimizeError]);
+
+  async function handleOptimize() {
+    const current = input.trim();
+    if (!current || optimizing || loading) return;
+    setOptimizing(true);
+    setOptimizeError(null);
+    try {
+      const res = await optimizePrompt(current);
+      onInput(res.optimized_prompt);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Failed to optimize prompt";
+      setOptimizeError(msg);
+    } finally {
+      setOptimizing(false);
+    }
+  }
 
   function renderAssistantContent(content: string) {
     const lines = content.split("\n");
@@ -220,16 +245,53 @@ export function Chat({ messages, loading, input, onInput, onSend, hasProject, on
 
       {/* Composer — always visible */}
       <div className="composer">
+        <AnimatePresence>
+          {optimizeError && (
+            <motion.div
+              key="opt-err"
+              className="optimize-error"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 4 }}
+              transition={{ duration: 0.18 }}
+              role="alert"
+            >
+              {optimizeError}
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div className="composer-inner">
-          <textarea
+          <motion.textarea
             value={input}
             onChange={(e) => onInput(e.target.value)}
             onKeyDown={onKey}
             placeholder={hasProject ? "Describe a change..." : "Describe what you want to build..."}
-            disabled={loading}
+            disabled={loading || optimizing}
             rows={1}
+            animate={optimizing ? { opacity: 0.55 } : { opacity: 1 }}
+            transition={{ duration: 0.18 }}
           />
-          <button onClick={onSend} disabled={loading || !input.trim()}>
+          <button
+            type="button"
+            className="optimize-btn"
+            onClick={handleOptimize}
+            disabled={optimizing || loading || !input.trim()}
+            title="Expand your prompt with AI"
+            aria-busy={optimizing}
+          >
+            {optimizing ? (
+              <span className="optimize-loading">
+                <span className="optimize-spinner" aria-hidden />
+                <span>Optimizing...</span>
+              </span>
+            ) : (
+              <>
+                <span className="optimize-spark" aria-hidden>✦</span>
+                <span>Optimize</span>
+              </>
+            )}
+          </button>
+          <button onClick={onSend} disabled={loading || optimizing || !input.trim()}>
             {loading ? "..." : hasProject ? "Update" : "Build"}
           </button>
         </div>
