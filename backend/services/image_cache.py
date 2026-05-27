@@ -28,8 +28,16 @@ def cache_dir() -> Path:
 
 
 def _backend_url() -> str:
-    """Origin used for `/assets/...` URLs. Set PUBLIC_BACKEND_URL in production."""
-    return os.getenv("PUBLIC_BACKEND_URL", "http://127.0.0.1:8000").rstrip("/")
+    """Origin used for `/assets/...` URLs.
+
+    Defaults to the production Render URL so deployed frontends never
+    receive loopback URLs they can't fetch. Override with
+    PUBLIC_BACKEND_URL=http://127.0.0.1:8000 for local dev.
+    """
+    return os.getenv(
+        "PUBLIC_BACKEND_URL",
+        "https://crew-41zs.onrender.com",
+    ).rstrip("/")
 
 
 def cache_key(provider: str, prompt: str, width: int, height: int, seed: int | None) -> str:
