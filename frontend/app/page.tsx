@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { UserButton } from "@clerk/nextjs";
 
 import { Artifact } from "./components/Artifact";
 import { Chat, type Message } from "./components/Chat";
@@ -144,6 +145,15 @@ export default function Page() {
                 + New
               </button>
             )}
+            <div className="header-user">
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "header-user-avatar",
+                  },
+                }}
+              />
+            </div>
           </div>
         </header>
         <Chat

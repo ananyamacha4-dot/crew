@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.4.1",
     "@codesandbox/sandpack-react": "^2.20.0",
     "@monaco-editor/react": "4.6.0",
     "framer-motion": "^12.40.0",

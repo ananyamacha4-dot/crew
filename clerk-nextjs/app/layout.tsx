@@ -1,11 +1,9 @@
-import type { Metadata } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
-import "./(auth)/auth.css";
+import { ClerkProvider } from "@clerk/nextjs";
 
-export const metadata: Metadata = {
-  title: "AI Builder",
-  description: "Prompt to runnable app. Multi-agent code generation.",
+export const metadata = {
+  title: "AI Builder · Auth",
+  description: "Sign in or create an account for AI Builder.",
 };
 
 export default function RootLayout({

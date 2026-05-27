@@ -1,0 +1,485 @@
+/* ============================================================
+   AI Builder — Authentication (sign-in / sign-up) styles
+   Centered glass card on full-bleed aurora gradient.
+   ============================================================ */
+
+.auth-root {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  overflow: auto;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, rgba(99, 102, 241, 0.18), transparent 60%),
+    radial-gradient(900px 600px at 100% 110%, rgba(168, 85, 247, 0.15), transparent 60%),
+    #06080d;
+  color: #e6edf3;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    sans-serif;
+}
+
+/* --- background ornaments --- */
+
+.auth-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.aurora {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+  mix-blend-mode: screen;
+  animation: aurora-drift 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+.aurora-1 {
+  top: -10%;
+  left: -5%;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, #4f46e5 0%, #6366f1 40%, transparent 70%);
+  animation-delay: 0s;
+}
+
+.aurora-2 {
+  top: 35%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #a855f7 0%, #7c3aed 40%, transparent 70%);
+  animation-delay: -8s;
+}
+
+.aurora-3 {
+  bottom: -15%;
+  left: 30%;
+  width: 580px;
+  height: 580px;
+  background: radial-gradient(circle, #06b6d4 0%, #0891b2 40%, transparent 70%);
+  animation-delay: -14s;
+}
+
+@keyframes aurora-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%      { transform: translate(60px, -40px) scale(1.08); }
+  50%      { transform: translate(-30px, 50px) scale(0.96); }
+  75%      { transform: translate(40px, 30px) scale(1.04); }
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, #000 30%, transparent 100%);
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(6, 8, 13, 0.7) 100%);
+}
+
+/* --- stage / layout --- */
+
+.auth-stage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  animation: stage-in 600ms ease-out;
+}
+
+@keyframes stage-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.auth-brand {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.auth-brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.auth-brand-mark {
+  font-size: 20px;
+  line-height: 1;
+  filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.6));
+}
+
+.auth-brand-name {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #79c0ff 0%, #58a6ff 50%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.auth-brand-sub {
+  font-size: 11px;
+  color: #6b7280;
+  font-family: "Consolas", "Monaco", monospace;
+  letter-spacing: 0.02em;
+}
+
+/* --- card --- */
+
+.auth-card {
+  position: relative;
+  border-radius: 18px;
+  isolation: isolate;
+}
+
+.auth-card-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 19px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.55) 0%,
+    rgba(168, 85, 247, 0.3) 35%,
+    rgba(56, 189, 248, 0.15) 65%,
+    rgba(99, 102, 241, 0.45) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.auth-card-inner {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(15, 19, 28, 0.85) 0%, rgba(11, 14, 22, 0.92) 100%);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border-radius: 18px;
+  padding: 28px 28px 24px;
+  box-shadow:
+    0 30px 80px -20px rgba(0, 0, 0, 0.55),
+    0 8px 32px -8px rgba(79, 70, 229, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.auth-heading {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.auth-heading h1 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+  color: #f0f6fc;
+}
+
+.auth-heading p {
+  font-size: 13px;
+  color: #8b949e;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.auth-form-wrap {
+  width: 100%;
+}
+
+.auth-footer {
+  margin: 18px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: #8b949e;
+}
+
+.auth-footer-link {
+  color: #93a3f0;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 150ms;
+}
+
+.auth-footer-link:hover {
+  color: #c4b5fd;
+}
+
+/* --- legal footer --- */
+
+.auth-legal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #4a5568;
+  text-align: center;
+}
+
+.auth-legal .dot { color: #2d3748; }
+
+.muted-link {
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 150ms;
+}
+
+.muted-link:hover { color: #a0aec0; }
+
+/* ============================================================
+   Clerk component overrides
+   The Clerk <SignIn/> & <SignUp/> render their own elements;
+   we map class names via appearance.elements to take control.
+   ============================================================ */
+
+.auth-clerk-hidden { display: none !important; }
+
+.cl-rootBox.auth-clerk-root,
+.auth-clerk-root {
+  width: 100% !important;
+}
+
+.cl-card.auth-clerk-card,
+.auth-clerk-card {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+.auth-clerk-main {
+  gap: 14px !important;
+}
+
+/* social buttons */
+
+.auth-clerk-social-btn {
+  background: rgba(20, 25, 36, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #e6edf3 !important;
+  font-weight: 500 !important;
+  height: 42px !important;
+  border-radius: 10px !important;
+  transition: background 150ms, border-color 150ms, transform 150ms !important;
+}
+
+.auth-clerk-social-btn:hover {
+  background: rgba(30, 38, 56, 0.85) !important;
+  border-color: rgba(147, 163, 240, 0.4) !important;
+  transform: translateY(-1px);
+}
+
+.auth-clerk-social-btn-text {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+.auth-clerk-social-icon {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+/* divider */
+
+.auth-clerk-divider-line {
+  background: rgba(255, 255, 255, 0.08) !important;
+  height: 1px !important;
+}
+
+.auth-clerk-divider-text {
+  color: #6b7280 !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+}
+
+/* inputs */
+
+.auth-clerk-label {
+  color: #b8c4d4 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  margin-bottom: 4px !important;
+}
+
+.auth-clerk-input {
+  background: rgba(8, 12, 20, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #e6edf3 !important;
+  font-size: 14px !important;
+  height: 42px !important;
+  border-radius: 10px !important;
+  padding: 0 12px !important;
+  box-shadow: none !important;
+  transition: border-color 150ms, box-shadow 150ms !important;
+}
+
+.auth-clerk-input:focus,
+.auth-clerk-input:focus-visible,
+.auth-clerk-input[data-focused="true"] {
+  outline: none !important;
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18) !important;
+}
+
+.auth-clerk-input::placeholder {
+  color: #4a5568 !important;
+}
+
+.auth-clerk-show-pwd {
+  color: #6b7280 !important;
+}
+
+.auth-clerk-show-pwd:hover { color: #a0aec0 !important; }
+
+/* primary button */
+
+.auth-clerk-primary-btn {
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 45%, #7c3aed 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  height: 44px !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  box-shadow:
+    0 8px 24px -6px rgba(99, 102, 241, 0.55),
+    0 2px 0 0 rgba(255, 255, 255, 0.08) inset !important;
+  transition: transform 150ms, box-shadow 200ms, filter 200ms !important;
+}
+
+.auth-clerk-primary-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+  box-shadow:
+    0 12px 32px -8px rgba(99, 102, 241, 0.7),
+    0 2px 0 0 rgba(255, 255, 255, 0.1) inset !important;
+}
+
+.auth-clerk-primary-btn:active {
+  transform: translateY(0);
+  filter: brightness(0.96);
+}
+
+.auth-clerk-primary-btn:focus-visible {
+  outline: none !important;
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.5),
+    0 8px 24px -6px rgba(99, 102, 241, 0.55) !important;
+}
+
+/* links inside Clerk component (e.g., forgot password) */
+
+.auth-clerk-link {
+  color: #93a3f0 !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+.auth-clerk-link:hover {
+  color: #c4b5fd !important;
+}
+
+/* OTP / verification code */
+
+.auth-clerk-otp {
+  background: rgba(8, 12, 20, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #e6edf3 !important;
+  border-radius: 10px !important;
+}
+
+.auth-clerk-otp:focus,
+.auth-clerk-otp[data-focused="true"] {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18) !important;
+}
+
+/* alerts / errors */
+
+.auth-clerk-alert {
+  background: rgba(127, 29, 29, 0.25) !important;
+  border: 1px solid rgba(248, 113, 113, 0.35) !important;
+  border-radius: 10px !important;
+}
+
+.auth-clerk-alert-text,
+.auth-clerk-error {
+  color: #fca5a5 !important;
+  font-size: 12px !important;
+}
+
+.auth-clerk-success { color: #86efac !important; font-size: 12px !important; }
+.auth-clerk-warning { color: #fbbf24 !important; font-size: 12px !important; }
+
+/* spinner */
+
+.auth-clerk-spinner {
+  color: #c4b5fd !important;
+}
+
+/* internal identity-preview row tweaks (verification step) */
+
+.cl-identityPreview {
+  background: rgba(8, 12, 20, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 10px !important;
+}
+
+.cl-userPreviewMainIdentifier,
+.cl-userPreviewSecondaryIdentifier {
+  color: #e6edf3 !important;
+}
+
+/* hide Clerk default branded footer mark */
+.cl-internal-b3fm6y,
+.cl-footer {
+  display: none !important;
+}
+
+/* === responsive === */
+
+@media (max-width: 480px) {
+  .auth-card-inner { padding: 22px 18px 20px; }
+  .auth-heading h1 { font-size: 20px; }
+}
+
+/* === reduced motion === */
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora { animation: none; }
+  .auth-stage { animation: none; }
+}
