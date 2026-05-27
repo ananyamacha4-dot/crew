@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: ai-builder-backend
+    runtime: python
+    plan: starter
+    rootDir: backend
+    autoDeploy: true
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      python -m playwright install --with-deps chromium
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.6
+      - key: PIP_DISABLE_PIP_VERSION_CHECK
+        value: "1"
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      # The following are secrets — set their values in the Render dashboard,
+      # not here. Listing them with sync:false tells Render to keep them
+      # out of source control.
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
