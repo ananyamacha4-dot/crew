@@ -20,6 +20,39 @@ from typing import Iterable
 
 DB_PATH = Path(__file__).parent / "storage" / "builder.db"
 
+
+def _public_backend_url() -> str:
+    """Same default as services/image_cache.py — kept here to avoid an
+    import cycle. Any 127.0.0.1:8000 URL baked into older generated
+    files gets rewritten to this host before we ship the response."""
+    return os.getenv(
+        "PUBLIC_BACKEND_URL",
+        "https://crew-41zs.onrender.com",
+    ).rstrip("/")
+
+
+_LOOPBACK_PREFIXES = (
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "https://127.0.0.1:8000",
+    "https://localhost:8000",
+)
+
+
+def _rewrite_asset_urls(text: str) -> str:
+    """Rewrite stale loopback asset URLs to the current public host.
+
+    Older projects were generated when PUBLIC_BACKEND_URL defaulted to
+    127.0.0.1 — their file contents have those URLs baked in. Browsers
+    on https origins block loopback fetches, so we rewrite on read."""
+    if not text:
+        return text
+    public = _public_backend_url()
+    for prefix in _LOOPBACK_PREFIXES:
+        if prefix in text:
+            text = text.replace(prefix, public)
+    return text
+
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS projects (
     id          TEXT PRIMARY KEY,
@@ -139,7 +172,10 @@ def list_files(project_id: str) -> list[dict]:
             "SELECT path, content FROM files WHERE project_id = ? ORDER BY path",
             (project_id,),
         ).fetchall()
-    return [dict(r) for r in rows]
+    return [
+        {"path": r["path"], "content": _rewrite_asset_urls(r["content"])}
+        for r in rows
+    ]
 
 
 def get_file(project_id: str, path: str) -> dict | None:
@@ -148,7 +184,9 @@ def get_file(project_id: str, path: str) -> dict | None:
             "SELECT path, content FROM files WHERE project_id = ? AND path = ?",
             (project_id, path),
         ).fetchone()
-    return dict(row) if row else None
+    if not row:
+        return None
+    return {"path": row["path"], "content": _rewrite_asset_urls(row["content"])}
 
 
 def save_file(project_id: str, path: str, content: str) -> None:
