@@ -1,5 +1,11 @@
+const PROD_BACKEND = "https://crew-41zs.onrender.com";
+
+// In production we always hit the Render backend.
+// Only fall through to the env var for local dev (when explicitly overridden).
 export const BACKEND =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://crew-41zs.onrender.com";
+  typeof window !== "undefined" && window.location.hostname !== "localhost"
+    ? PROD_BACKEND
+    : process.env.NEXT_PUBLIC_API_BASE_URL || PROD_BACKEND;
 
 export type Stack = "static" | "react-vite";
 
