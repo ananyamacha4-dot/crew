@@ -87,34 +87,47 @@ app = FastAPI(
 )
 
 
+_ALWAYS_ALLOWED = [
+    "https://crew-qc5s.vercel.app",
+    "https://crew-gules.vercel.app",
+    "https://crew-git-ananya-ananyamacha4-dots-projects.vercel.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3001",
+    "http://localhost:3002",
+]
+
+
 def _allowed_origins() -> list[str]:
     configured = (
         os.getenv("ALLOWED_ORIGINS")
         or os.getenv("ALLOWED_ORIGIN")
     )
 
+    extra = []
     if configured:
-        return [
+        extra = [
             origin.strip()
             for origin in configured.split(",")
             if origin.strip()
         ]
 
-    return [
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:3001",
-        "http://localhost:3002",
-    ]
+    # Always include the production URLs so CORS works even if the env
+    # var is missing or misconfigured.
+    return list({*_ALWAYS_ALLOWED, *extra})
 
 
-# Enable CORS
+# Enable CORS — allow any Vercel preview / production deploy of the
+# crew project plus localhost dev servers. Hardcoded list takes effect
+# regardless of ALLOWED_ORIGINS env var state.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_allowed_origins(),
+    allow_origin_regex=r"https://crew-[a-z0-9-]+\.vercel\.app",
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_credentials=True,
 )
 
 # Serve cached Imagen / Gemini generated images. URLs returned by
